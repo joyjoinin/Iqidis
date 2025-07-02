@@ -1,0 +1,22 @@
+{
+  "name": "iqidis",
+  "version": "1.0.0",
+  "description": "Iqidis automation",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joyjoinin/Iqidis.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joyjoinin/Iqidis/issues"
+  },
+  "homepage": "https://github.com/joyjoinin/Iqidis#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.53.2",
+    "@types/node": "^24.0.10"
+  }
+}

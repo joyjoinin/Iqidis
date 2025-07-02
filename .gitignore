@@ -1,0 +1,14 @@
+
+# Playwright
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/.auth/
+results.xml
+.env
+.DS_Store
+/tests/.DS_Store
+data
+test-results.json
