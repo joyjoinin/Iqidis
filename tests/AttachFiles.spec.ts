@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { test } from "@playwright/test";
 import Pages from "../common/page";
 
 test.describe("Attach files functions", () => {
@@ -45,6 +45,24 @@ test.describe("Attach files functions", () => {
     await Page.assertElementsAreNotExist([
       page.getByRole("cell", { name: "DOCX", exact: true }),
       page.getByRole("cell", { name: "TXT", exact: true }),
+    ]);
+
+    await Page.attachFiles.clickFilter();
+    await Page.attachFiles.selectPDF();
+    await Page.attachFiles.clickFilter();
+    await Page.attachFiles.selectDoc();
+    await Page.assertElementsAreNotExist([
+      page.getByRole("cell", { name: "PDF", exact: true }),
+      page.getByRole("cell", { name: "TXT", exact: true }),
+    ]);
+
+    await Page.attachFiles.clickFilter();
+    await Page.attachFiles.selectDoc();
+    await Page.attachFiles.clickFilter();
+    await Page.attachFiles.selectTxt();
+    await Page.assertElementsAreNotExist([
+      page.getByRole("cell", { name: "DOCX", exact: true }),
+      page.getByRole("cell", { name: "PDF", exact: true }),
     ]);
   });
 

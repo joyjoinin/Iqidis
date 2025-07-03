@@ -22,6 +22,8 @@ export class AttachFiles {
   uploadNewFilesButton: Locator;
   doNotAddDocumentToLibraryCheckbox: Locator;
   closeButton: any;
+  docFiles: Locator;
+  txtFiles: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -32,6 +34,8 @@ export class AttachFiles {
     this.allDocumentsButton = page.getByText("All Documents");
     this.filterButton = page.locator(".lucide.lucide-filter");
     this.pdfFiles = page.getByText("PDF Files");
+    this.docFiles = page.getByText("DOC/DOCX Files");
+    this.txtFiles = page.getByText("TXT Files");
     this.selectAllCheckbox = page.getByRole("checkbox", { name: "Select all" });
     this.attachButton = page.getByRole("button", { name: "Attach" });
     this.recentFilesButton = page.getByText("Recent Files");
@@ -93,6 +97,16 @@ export class AttachFiles {
   }
   async selectPDF() {
     await this.pdfFiles.click();
+    await this.page.waitForTimeout(3000);
+  }
+
+  async selectDoc() {
+    await this.docFiles.click();
+    await this.page.waitForTimeout(3000);
+  }
+
+  async selectTxt() {
+    await this.txtFiles.click();
     await this.page.waitForTimeout(3000);
   }
 

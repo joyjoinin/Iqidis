@@ -20,6 +20,7 @@ export class Library {
   deleteButton: Locator;
   shareButton: Locator;
   sharedButton: Locator;
+  closeButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -53,6 +54,7 @@ export class Library {
     this.deleteButton = page.getByRole("button", { name: "Delete" });
     this.shareButton = page.getByRole("button", { name: "Share" });
     this.sharedButton = page.getByText("Shared", { exact: true });
+    this.closeButton = page.locator("button").filter({ hasText: "Close" });
   }
 
   async clickLibrary() {
@@ -67,7 +69,8 @@ export class Library {
     await this.selectFilesButton.click();
   }
 
-  async inputFile(file: string = "common/testFiles/UploadFile1.pdf") {
+  async inputFile(document: string = "UploadFile1.pdf") {
+    const file = "common/testFiles/" + document;
     const file_input = this.page.locator("input[name='file']");
     await file_input.setInputFiles(file);
   }
@@ -162,5 +165,44 @@ export class Library {
 
   async deleteConfirm() {
     await this.deleteButton.click();
+  }
+
+  async closeUpload() {
+    await this.closeButton.click();
+  }
+
+  async deleteDocumentByAction(document: string) {
+    await this.page
+      .locator("tr")
+      .filter({ hasText: document })
+      .locator("svg")
+      .last()
+      .click();
+    await this.page.getByRole("menu").getByText("Delete").click();
+    await this.page
+      .getByLabel("Delete the document(s)")
+      .getByRole("button", {
+        name: "Delete",
+      })
+      .click();
+  }
+
+  async deleteDocument(document: string) {
+    await this.page
+      .locator("tr")
+      .filter({ hasText: document })
+      .locator('input[type="checkbox"]')
+      .check();
+    await this.page.getByRole("button", { name: "Delete" }).click();
+    await this.page
+      .getByLabel("Delete the document(s)")
+      .getByRole("button", { name: "Delete" })
+      .click();
+  }
+
+  async searchDocument(document: string) {
+    await this.page.getByPlaceholder("Search documents...").fill(document);
+    await this.page.keyboard.press("Enter");
+    await this.page.waitForTimeout(3000);
   }
 }
