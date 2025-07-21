@@ -72,7 +72,11 @@ test.describe("Attach files functions", () => {
     await Page.attachFiles.clickRecentFiles();
 
     //Attach first file
-    await Page.attachFiles.attachButton.first().click();
+    await Page.page
+      .locator('div[data-sentry-component="RecentView"]')
+      .getByRole("button", { name: "Attach", exact: true })
+      .first()
+      .click();
     await Page.assertElementExist(Page.file);
   });
 

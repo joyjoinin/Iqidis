@@ -111,7 +111,7 @@ test.describe("Library functions", () => {
 
   test("Delete file by Actions", async ({ page }) => {
     const Page = new Pages(page);
-    const document = "DeleteOne.pdf";
+    const document = "DeleteOneByActions.pdf";
     await Page.library.clickLibrary();
     await Page.library.uploadFile();
     await Page.library.clickSelectFiles();

@@ -37,7 +37,11 @@ export class AttachFiles {
     this.docFiles = page.getByText("DOC/DOCX Files");
     this.txtFiles = page.getByText("TXT Files");
     this.selectAllCheckbox = page.getByRole("checkbox", { name: "Select all" });
-    this.attachButton = page.getByRole("button", { name: "Attach" });
+    // this.attachButton = page.getByRole("button", {
+    //   name: "Attach",
+    //   exact: true,
+    // });
+    this.attachButton = page.getByRole("button", { name: "Attach" }).last();
     this.recentFilesButton = page.getByText("Recent Files");
     this.star = page.locator(
       'svg[class="lucide lucide-star size-4 cursor-pointer hover:text-yellow-700"]'

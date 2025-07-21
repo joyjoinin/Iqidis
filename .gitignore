@@ -12,3 +12,4 @@ results.xml
 /tests/.DS_Store
 data
 test-results.json
+/tests/Auth.spec.ts
