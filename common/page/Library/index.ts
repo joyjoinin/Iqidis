@@ -149,7 +149,7 @@ export class Library {
       .locator(
         'svg[class="lucide lucide-ellipsis size-4 dark:group-hover:text-white group-hover:text-function-message"]'
       )
-      .first()
+      .last()
       .click();
   }
 

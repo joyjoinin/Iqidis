@@ -3,9 +3,7 @@ import Pages from "../common/page";
 
 test.describe("Attach files functions", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(
-      "https://iqidisai-git-feat-multi-tenancy-iqidis.vercel.app"
-    );
+    await page.goto("/");
   });
 
   test("Attach documents", async ({ page }) => {

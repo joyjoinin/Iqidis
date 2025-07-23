@@ -1,17 +1,12 @@
-import { chromium, test } from "@playwright/test";
+import { test } from "@playwright/test";
 import Pages from "../common/page";
 
 test.describe("Share ", () => {
-  const newPage = async () => {
-    const browser = await chromium.launch();
-    const context = await browser.newContext({
-      storageState: ".auth/template.json",
-    });
-    return await context.newPage();
-  };
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
+  });
 
-  test("Share document / Cancel share", async () => {
-    const page = await newPage();
+  test("Share document / Cancel share", async ({ page }) => {
     const Page = new Pages(page);
     await page.goto(
       "https://iqidisai-git-feat-multi-tenancy-iqidis.vercel.app"

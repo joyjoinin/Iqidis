@@ -2,33 +2,24 @@ import { chromium, test } from "@playwright/test";
 import Pages from "../common/page";
 
 test.describe("Workspace", () => {
-  const newPage = async () => {
-    const browser = await chromium.launch();
-    const context = await browser.newContext({
-      storageState: ".auth/template.json",
-    });
-    return await context.newPage();
-  };
-
   const generateEmail = "joy+" + Date.now().toString() + "@gmail.com";
   const newGroup = { name: "New group", description: "This is new group" };
   const origin = {
-    name: "Iqidis workspace",
-    description: "Iqidis work",
+    name: "China",
+    description: "Personal workspace for joy",
   };
   const settings = {
     name: "New Settings",
     description: "This is new settings",
   };
-
-  test("Workspace homepage", async () => {
-    const page = await newPage();
-    const Page = new Pages(page);
-    await page.goto(
-      "https://iqidisai-git-feat-multi-tenancy-iqidis.vercel.app"
-    );
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/");
     await page.locator('span[data-sentry-element="Avatar"]').click();
     await page.getByRole("menuitem", { name: "Manage Organization" }).click();
+  });
+
+  test("Workspace homepage", async ({ page }) => {
+    const Page = new Pages(page);
     await Page.assertElementsExist([
       page
         .locator("div")
@@ -43,14 +34,8 @@ test.describe("Workspace", () => {
     ]);
   });
 
-  test("Invite user/ Delete user", async () => {
-    const page = await newPage();
+  test("Invite user/ Delete user", async ({ page }) => {
     const Page = new Pages(page);
-    await page.goto(
-      "https://iqidisai-git-feat-multi-tenancy-iqidis.vercel.app"
-    );
-    await page.locator('span[data-sentry-element="Avatar"]').click();
-    await page.getByRole("menuitem", { name: "Manage Organization" }).click();
     await page.getByRole("tab", { name: "Users" }).click();
     await page.getByRole("button", { name: "Invite User" }).click();
     await page.getByPlaceholder("Enter email address").fill(generateEmail);
@@ -73,14 +58,8 @@ test.describe("Workspace", () => {
     );
   });
 
-  test("Create group/ Delete group", async () => {
-    const page = await newPage();
+  test("Create group/ Delete group", async ({ page }) => {
     const Page = new Pages(page);
-    await page.goto(
-      "https://iqidisai-git-feat-multi-tenancy-iqidis.vercel.app"
-    );
-    await page.locator('span[data-sentry-element="Avatar"]').click();
-    await page.getByRole("menuitem", { name: "Manage Organization" }).click();
     await page.getByRole("tab", { name: "Groups" }).click();
     await page.getByRole("button", { name: "Create Group" }).click();
     await page.getByPlaceholder("Enter group name").fill(newGroup.name);
@@ -113,14 +92,8 @@ test.describe("Workspace", () => {
     );
   });
 
-  test("Invite user/Delete user in group", async () => {
-    const page = await newPage();
+  test("Invite user/Delete user in group", async ({ page }) => {
     const Page = new Pages(page);
-    await page.goto(
-      "https://iqidisai-git-feat-multi-tenancy-iqidis.vercel.app"
-    );
-    await page.locator('span[data-sentry-element="Avatar"]').click();
-    await page.getByRole("menuitem", { name: "Manage Organization" }).click();
     await page.getByRole("tab", { name: "Groups" }).click();
     await page
       .getByRole("row", { name: "Shanghai test" })
@@ -146,14 +119,8 @@ test.describe("Workspace", () => {
     );
   });
 
-  test("Settings", async () => {
-    const page = await newPage();
+  test("Settings", async ({ page }) => {
     const Page = new Pages(page);
-    await page.goto(
-      "https://iqidisai-git-feat-multi-tenancy-iqidis.vercel.app"
-    );
-    await page.locator('span[data-sentry-element="Avatar"]').click();
-    await page.getByRole("menuitem", { name: "Manage Organization" }).click();
     await page.getByRole("tab", { name: "Settings" }).click();
     await page.getByPlaceholder("Enter organization name").fill(settings.name);
     await page

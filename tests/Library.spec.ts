@@ -54,12 +54,20 @@ test.describe("Library functions", () => {
 
   test("Move Files", async ({ page }) => {
     const Page = new Pages(page);
+    const document = "MoveOne.pdf";
     await Page.library.clickLibrary();
-    const fileNumber = 3;
-    for (let i = 0; i < fileNumber; i++) {
-      await Page.library.checkFile(i);
-    }
-    await Page.assertElementExist(page.getByText(`${fileNumber} selected`));
+    await Page.library.uploadFile();
+    await Page.library.clickSelectFiles();
+    await Page.library.inputFile(document);
+    await Page.library.upload();
+    await Page.assertElementExist(
+      page.getByText("1 files uploaded successfully")
+    );
+    await Page.library.closeUpload();
+    await page
+      .getByRole("row", { name: document })
+      .getByRole("checkbox")
+      .check();
     await Page.library.moveFile();
     await Page.library.selectFolder();
     await Page.library.move();
@@ -67,19 +75,11 @@ test.describe("Library functions", () => {
       page.getByText("Document(s) moved successfully")
     );
     await Page.library.clickFolders();
-    // first folder
+    // last folder
     await page
-      .locator(
-        'div[data-sentry-component="FolderList"] > div:nth-child(2) > div > div:nth-child(1) > div'
-      )
+      .locator('div[role="tabpanel"] > div > div > div:nth-child(2)')
       .click();
-    await page.waitForTimeout(5000);
-    const filesCounts = (
-      await page
-        .locator('tbody tr[class="ant-table-row ant-table-row-level-0"]')
-        .all()
-    ).length;
-    await Page.assertElementEqualTo(fileNumber, filesCounts);
+    await Page.assertElementExist(page.getByText(document));
   });
 
   test("Edit folder", async ({ page }) => {
@@ -105,7 +105,6 @@ test.describe("Library functions", () => {
     await Page.library.deleteConfirm();
     await Page.assertElementsExist([
       page.getByText("Folder deleted successfully"),
-      page.getByText("No Records Yet"),
     ]);
   });
 

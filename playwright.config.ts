@@ -32,8 +32,9 @@ export default defineConfig({
 
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
-    baseURL: process.env.baseURL || "https://core.iqidis.ai",
-
+    baseURL:
+      process.env.baseURL ||
+      "https://iqidisai-git-feat-multi-tenancy-iqidis.vercel.app",
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "retain-on-failure",
     video: { mode: "retain-on-failure", size: { width: 1720, height: 1080 } },
