@@ -21,10 +21,11 @@ export class Library {
   shareButton: Locator;
   sharedButton: Locator;
   closeButton: Locator;
+  documentsTap: Locator;
 
   constructor(page: Page) {
     this.page = page;
-    this.libraryButton = page.getByRole("button", { name: "Library" });
+    this.libraryButton = page.getByRole("link").nth(2);
     this.uploadFileButton = page.getByRole("button", { name: "Upload" });
     this.selectFilesButton = page.getByRole("button", {
       name: "Select files",
@@ -52,9 +53,10 @@ export class Library {
     this.renameButton = page.getByRole("button", { name: "Rename" });
     this.deleteMenu = page.getByRole("menuitem", { name: "Delete" });
     this.deleteButton = page.getByRole("button", { name: "Delete" });
-    this.shareButton = page.getByRole("button", { name: "Share" });
+    this.shareButton = page.getByRole("menuitem", { name: "Share File" });
     this.sharedButton = page.getByText("Shared", { exact: true });
     this.closeButton = page.locator("button").filter({ hasText: "Close" });
+    this.documentsTap = page.getByText("Documents", { exact: true });
   }
 
   async clickLibrary() {

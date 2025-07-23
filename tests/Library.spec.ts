@@ -185,19 +185,4 @@ test.describe("Library functions", () => {
     ).length;
     await Page.assertElementEqualTo(1, result);
   });
-
-  test("Share on All Documents", async ({ page }) => {
-    const Page = new Pages(page);
-    await Page.library.clickLibrary();
-    await Page.assertElementIsDisabled(Page.library.shareButton);
-    await Page.library.shareButton.hover();
-    await Page.assertElementExist(page.getByText("Coming soon"));
-  });
-
-  test("Shared on Tap", async ({ page }) => {
-    const Page = new Pages(page);
-    await Page.library.clickLibrary();
-    await Page.library.sharedButton.hover();
-    await Page.assertElementExist(page.getByText("Coming soon"));
-  });
 });
