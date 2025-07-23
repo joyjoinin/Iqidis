@@ -113,6 +113,39 @@ test.describe("Workspace", () => {
     );
   });
 
+  test("Invite user/Delete user in group", async () => {
+    const page = await newPage();
+    const Page = new Pages(page);
+    await page.goto(
+      "https://iqidisai-git-feat-multi-tenancy-iqidis.vercel.app"
+    );
+    await page.locator('span[data-sentry-element="Avatar"]').click();
+    await page.getByRole("menuitem", { name: "Manage Organization" }).click();
+    await page.getByRole("tab", { name: "Groups" }).click();
+    await page
+      .getByRole("row", { name: "Shanghai test" })
+      .getByRole("button")
+      .first()
+      .click();
+    await page.locator("#seatId").click();
+    await page.getByText("joy+04@57blocks.com").click();
+    await page.waitForTimeout(3000);
+    await page.getByRole("button", { name: "Add Member" }).click();
+    await Page.assertElementsExist([
+      page.getByText("Member added to group"),
+      page.getByRole("row", { name: "joy+04@57blocks.com" }),
+    ]);
+    await page
+      .getByRole("row", { name: "joy+04@57blocks.com Member" })
+      .getByRole("button")
+      .click();
+    await page.getByRole("button", { name: "Yes" }).click();
+    await Page.assertElementExist(page.getByText("Member removed from group"));
+    await Page.assertElementIsNotExist(
+      page.getByRole("row", { name: "joy+04@57blocks.com" })
+    );
+  });
+
   test("Settings", async () => {
     const page = await newPage();
     const Page = new Pages(page);
