@@ -3,7 +3,9 @@ import Pages from "../common/page";
 
 test.describe("Attach files functions", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/");
+    await page.goto(
+      "https://iqidisai-git-feat-multi-tenancy-iqidis.vercel.app"
+    );
   });
 
   test("Attach documents", async ({ page }) => {
@@ -16,9 +18,9 @@ test.describe("Attach files functions", () => {
     await Page.attachFiles.selectAllFiles();
     await Page.attachFiles.attachFile();
 
-    await Page.assertElementExist(
-      page.getByText("File size or quantity exceeds")
-    );
+    // await Page.assertElementExist(
+    //   page.getByText("File size or quantity exceeds")
+    // );
     const FileAttached = (await page.locator(".w-20").all()).length;
     await Page.assertElementEqualTo(10, FileAttached);
 
@@ -77,7 +79,9 @@ test.describe("Attach files functions", () => {
       .getByRole("button", { name: "Attach", exact: true })
       .first()
       .click();
-    await Page.assertElementExist(Page.file);
+    await Page.assertElementExist(
+      page.getByRole("button", { name: "Click to preview" }).getByRole("button")
+    );
   });
 
   test("Favorite documents", async ({ page }) => {

@@ -51,7 +51,7 @@ export default defineConfig({
         ...devices["Desktop Chrome"],
         // channel: "chrome",
         viewport: { width: 1720, height: 1080 },
-        storageState: ".auth/User.json",
+        storageState: ".auth/template.json",
         headless: true,
         // headless: false,
         launchOptions: {

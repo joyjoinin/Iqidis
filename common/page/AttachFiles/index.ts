@@ -21,7 +21,7 @@ export class AttachFiles {
   attachToChatButton: Locator;
   uploadNewFilesButton: Locator;
   doNotAddDocumentToLibraryCheckbox: Locator;
-  closeButton: any;
+  closeButton: Locator;
   docFiles: Locator;
   txtFiles: Locator;
 
@@ -75,11 +75,9 @@ export class AttachFiles {
     });
 
     this.uploadNewFilesButton = page.getByText("Upload New Files");
-    this.doNotAddDocumentToLibraryCheckbox = page.getByRole("checkbox", {
-      name: "Do not add document to library",
-    });
+    this.doNotAddDocumentToLibraryCheckbox = page.locator("#not-to-library");
 
-    this.closeButton = page.locator("button").filter({ hasText: "Close" });
+    this.closeButton = page.getByRole("button", { name: "Close", exact: true });
   }
 
   async clickAttachFilesIcon() {
