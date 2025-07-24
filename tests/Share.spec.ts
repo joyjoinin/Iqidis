@@ -6,11 +6,38 @@ test.describe("Share ", () => {
     await page.goto("/");
   });
 
+  test("Change Share Policy to public", async ({ page }) => {
+    const Page = new Pages(page);
+    await page.locator('span[data-sentry-element="Avatar"]').click();
+    await page.getByRole("menuitem", { name: "Manage Organization" }).click();
+    await page.getByRole("tab", { name: "Settings" }).click();
+    await page.locator('div[data-sentry-element="Select"]').click();
+    await page.getByText("Public", { exact: true }).click();
+    await page.getByRole("button", { name: "Save Changes" }).click();
+  });
+
+  test("Change Share Policy to Inner", async ({ page }) => {
+    const Page = new Pages(page);
+    await page.locator('span[data-sentry-element="Avatar"]').click();
+    await page.getByRole("menuitem", { name: "Manage Organization" }).click();
+    await page.getByRole("tab", { name: "Settings" }).click();
+    await page.locator('div[data-sentry-element="Select"]').click();
+    await page.getByText("Inner", { exact: true }).click();
+    await page.getByRole("button", { name: "Save Changes" }).click();
+  });
+
+  test("Change Share Policy to approval", async ({ page }) => {
+    const Page = new Pages(page);
+    await page.locator('span[data-sentry-element="Avatar"]').click();
+    await page.getByRole("menuitem", { name: "Manage Organization" }).click();
+    await page.getByRole("tab", { name: "Settings" }).click();
+    await page.locator('div[data-sentry-element="Select"]').click();
+    await page.getByText("Require Approval", { exact: true }).click();
+    await page.getByRole("button", { name: "Save Changes" }).click();
+  });
+
   test("Share document / Cancel share", async ({ page }) => {
     const Page = new Pages(page);
-    await page.goto(
-      "https://iqidisai-git-feat-multi-tenancy-iqidis.vercel.app"
-    );
     await Page.library.clickLibrary();
     await Page.page
       .getByRole("row", { name: "admin-folder-beijing.txt TXT" })
