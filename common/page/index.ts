@@ -6,12 +6,10 @@ export default class Pages {
   page: Page;
   attachFiles: AttachFiles;
   library: Library;
-  file: Locator;
   constructor(page: Page) {
     this.page = page;
     this.attachFiles = new AttachFiles(page);
     this.library = new Library(page);
-    this.file = page.locator(".w-20");
   }
 
   async homepage() {

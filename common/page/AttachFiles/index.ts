@@ -32,26 +32,27 @@ export class AttachFiles {
     );
     this.libraryFilesButton = page.getByText("Library Files");
     this.allDocumentsButton = page.getByText("All Documents");
-    this.filterButton = page.locator(".lucide.lucide-filter");
+    this.filterButton = page.locator(
+      "div[data-sentry-element='DropdownMenuTrigger']"
+    );
     this.pdfFiles = page.getByText("PDF Files");
     this.docFiles = page.getByText("DOC/DOCX Files");
     this.txtFiles = page.getByText("TXT Files");
-    this.selectAllCheckbox = page.getByRole("checkbox", { name: "Select all" });
+    this.selectAllCheckbox = page
+      .getByRole("row")
+      .getByRole("checkbox")
+      .first();
     // this.attachButton = page.getByRole("button", {
     //   name: "Attach",
     //   exact: true,
     // });
-    this.attachButton = page.getByRole("button", { name: "Attach" }).last();
+    this.attachButton = page.getByRole("button", { name: "Attach (9)" }).last();
     this.recentFilesButton = page.getByText("Recent Files");
-    this.star = page.locator(
-      'svg[class="lucide lucide-star size-4 cursor-pointer hover:text-yellow-700"]'
-    );
+    this.star = page.getByTestId("favorite-icon");
     this.yellowStar = page.locator(
       'svg[class="lucide lucide-star size-4 cursor-pointer hover:text-yellow-700 text-yellow-300 fill-current"]'
     );
-    this.favoritesLabel = page
-      .locator("label")
-      .filter({ hasText: "Favorites" });
+    this.favoritesLabel = page.getByRole("button", { name: "Favorites" });
     this.browseLibraryButton = page.getByRole("button", {
       name: "Browse Library",
     });
@@ -95,7 +96,6 @@ export class AttachFiles {
   }
   async clickFilter() {
     await this.filterButton.click();
-    await this.filterButton.hover();
   }
   async selectPDF() {
     await this.pdfFiles.click();

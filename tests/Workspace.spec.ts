@@ -26,7 +26,9 @@ test.describe("Workspace", () => {
         .filter({ hasText: /^Seat Usage$/ })
         .first(),
       page.getByRole("heading", { name: "Admin Panel" }),
-      page.getByText("Quick Actions"),
+      page
+        .locator('div[data-sentry-element="Card"]')
+        .getByText("Quick Actions"),
       page.getByRole("tab", { name: "Overview" }),
       page.getByRole("tab", { name: "Users" }),
       page.getByRole("tab", { name: "Groups" }),

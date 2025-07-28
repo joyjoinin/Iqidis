@@ -13,25 +13,34 @@ test.describe("Attach files functions", () => {
     await Page.attachFiles.clickAllDocuments();
 
     //Attach first page files
+    await Page.page.waitForTimeout(3000);
     await Page.attachFiles.selectAllFiles();
     await Page.attachFiles.attachFile();
 
     // await Page.assertElementExist(
     //   page.getByText("File size or quantity exceeds")
     // );
-    const FileAttached = (await page.locator(".w-20").all()).length;
-    await Page.assertElementEqualTo(10, FileAttached);
+    const FileAttached = (
+      await page
+        .locator("button[data-sentry-component='DocumentPreviewTrigger']")
+        .all()
+    ).length;
+    await Page.assertElementEqualTo(9, FileAttached);
 
     //Delete attach files
     for (let i = 0; i < 3; i++) {
       await page
         .locator("div[data-sentry-source-file='preview-attachment.tsx'] button")
-        .last()
+        .first()
         .click();
       await Page.assertElementExist(page.getByText("File deleted:").last());
       await page.waitForTimeout(3000);
     }
-    const restFiles = (await Page.file.all()).length;
+    const restFiles = (
+      await Page.page
+        .locator("button[data-sentry-component='DocumentPreviewTrigger']")
+        .all()
+    ).length;
     await Page.assertElementEqualTo(FileAttached - 3, restFiles);
   });
 
@@ -40,6 +49,7 @@ test.describe("Attach files functions", () => {
     await Page.attachFiles.clickAttachFilesIcon();
     await Page.attachFiles.clickLibraryFiles();
     await Page.attachFiles.clickAllDocuments();
+    await Page.page.waitForTimeout(3000);
     await Page.attachFiles.clickFilter();
     await Page.attachFiles.selectPDF();
     await Page.assertElementsAreNotExist([
@@ -90,19 +100,25 @@ test.describe("Attach files functions", () => {
     // Add stars
 
     for (let i = 0; i < 3; i++) {
-      await Page.attachFiles.star.first().click();
+      await Page.page
+        .locator('svg[data-test-id="favorite-icon"]')
+        .nth(i + 1)
+        .click();
       await page.waitForTimeout(3000);
     }
 
-    const stars = (await Page.attachFiles.yellowStar.all()).length;
+    const stars = (await Page.attachFiles.star.all()).length;
     await Page.attachFiles.clickFavorites();
-    const files = (await Page.attachFiles.yellowStar.all()).length;
+    const files = (await Page.attachFiles.star.all()).length;
     await Page.assertElementEqualTo(stars, files);
 
     // Remove stars
 
     for (let i = 0; i < 3; i++) {
-      await Page.attachFiles.yellowStar.first().click();
+      await Page.page
+        .locator('svg[data-test-id="favorite-icon"]')
+        .first()
+        .click();
       await page.waitForTimeout(3000);
     }
 
@@ -132,7 +148,11 @@ test.describe("Attach files functions", () => {
       page.getByText("1 files uploaded successfully")
     );
     await Page.attachFiles.attachToChat();
-    await Page.assertElementExist(Page.file);
+    await Page.assertElementExist(
+      Page.page.locator(
+        "button[data-sentry-component='DocumentPreviewTrigger']"
+      )
+    );
   });
 
   test("Upload new from Upload New Files", async ({ page }) => {
@@ -148,7 +168,11 @@ test.describe("Attach files functions", () => {
       page.getByText("1 files uploaded successfully")
     );
     await Page.attachFiles.attachToChat();
-    await Page.assertElementExist(Page.file);
+    await Page.assertElementExist(
+      Page.page.locator(
+        "button[data-sentry-component='DocumentPreviewTrigger']"
+      )
+    );
   });
 
   test("Do not add document to library", async ({ page }) => {

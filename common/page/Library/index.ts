@@ -56,7 +56,7 @@ export class Library {
     this.shareButton = page.getByRole("menuitem", { name: "Share File" });
     this.sharedButton = page.getByText("Shared", { exact: true });
     this.closeButton = page.locator("button").filter({ hasText: "Close" });
-    this.documentsTap = page.getByText("Documents", { exact: true });
+    this.documentsTap = page.getByText("All Documents").first();
   }
 
   async clickLibrary() {
