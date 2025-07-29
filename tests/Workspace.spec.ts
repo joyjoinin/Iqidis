@@ -60,7 +60,7 @@ test.describe("Workspace", () => {
     );
   });
 
-  test("Create group/ Delete group", async ({ page }) => {
+  test("Create group/Edit/ Delete group", async ({ page }) => {
     const Page = new Pages(page);
     await page.getByRole("tab", { name: "Groups" }).click();
     await page.getByRole("button", { name: "Create Group" }).click();
@@ -79,9 +79,23 @@ test.describe("Workspace", () => {
         .filter({ hasText: newGroup.name })
         .getByRole("cell", { name: newGroup.description })
     );
+
     await page
       .locator("tr")
       .filter({ hasText: newGroup.name })
+      .getByRole("button")
+      .nth(1)
+      .click();
+    await page.getByPlaceholder("Enter group name").clear();
+    await page.getByPlaceholder("Enter group name").fill("edit");
+    await page.getByPlaceholder("Enter group description").clear();
+    await page
+      .getByPlaceholder("Enter group description")
+      .fill("edit description");
+    await page.getByRole("button", { name: "Update Group" }).click();
+    await page
+      .locator("tr")
+      .filter({ hasText: "edit" })
       .getByRole("button")
       .last()
       .click();
@@ -89,8 +103,8 @@ test.describe("Workspace", () => {
     await Page.assertElementIsNotExist(
       page
         .locator("tr")
-        .filter({ hasText: newGroup.name })
-        .getByRole("cell", { name: newGroup.description })
+        .filter({ hasText: "edit" })
+        .getByRole("cell", { name: "Enter group description" })
     );
   });
 
