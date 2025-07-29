@@ -137,4 +137,24 @@ test.describe("Workspace", () => {
       .fill(origin.description);
     await page.getByRole("button", { name: "Save Changes" }).click();
   });
+
+  test("Buy more seats", async ({ page }) => {
+    const Page = new Pages(page);
+    await page.getByRole("link", { name: "Buy more seats" }).click();
+    await page.locator('button svg[data-sentry-element="Plus"]').click();
+    await page.getByRole("button", { name: "Add Seats" }).click();
+    await page.getByRole("button", { name: "Pay Now" }).click();
+    await Page.assertElementExist(page.getByText("Backdev sandboxSandbox"));
+  });
+
+  test("Manage subscription", async ({ page }) => {
+    const Page = new Pages(page);
+    await page.getByRole("link", { name: "Buy more seats" }).click();
+    await page.getByRole("button", { name: "Manage Subscription" }).click();
+    await Page.assertElementsExist([
+      page.getByText("Subscription History"),
+      page.getByRole("cell", { name: "Cancel" }),
+      page.getByText("Active", { exact: true }),
+    ]);
+  });
 });
