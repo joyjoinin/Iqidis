@@ -1,4 +1,4 @@
-import { chromium, test } from "@playwright/test";
+import { test } from "@playwright/test";
 import Pages from "../common/page";
 
 test.describe("Workspace", () => {
@@ -34,6 +34,17 @@ test.describe("Workspace", () => {
       page.getByRole("tab", { name: "Groups" }),
       page.getByRole("tab", { name: "Settings" }),
     ]);
+  });
+
+  test("Quick actions", async ({ page }) => {
+    const Page = new Pages(page);
+    await page.getByRole("button", { name: "Invite New Users" }).click();
+    await Page.assertElementExist(page.getByText("Invite UserEmailCancelSend"));
+    await page.getByRole("button", { name: "Cancel" }).click();
+    await page.getByRole("button", { name: "Organization Settings" }).click();
+    await Page.assertElementExist(
+      page.getByText("Organization NameOrganization")
+    );
   });
 
   test("Invite user/ Delete user", async ({ page }) => {
