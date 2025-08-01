@@ -188,4 +188,22 @@ test.describe("Workspace", () => {
       page.getByText("Active", { exact: true }),
     ]);
   });
+
+  test("Cancel/Reactivate subscription ", async ({ page }) => {
+    const Page = new Pages(page);
+    await page.getByRole("tab", { name: "Subscription History" }).click();
+    await page.locator("td button").filter({ hasText: "Cancel" }).click();
+    await page.getByRole("button", { name: "Cancel Subscription" }).click();
+    await page.waitForTimeout(10000);
+    await Page.assertElementExist(
+      page.getByRole("alert").filter({ hasText: "Subscription Cancellation" })
+    );
+    await page.getByRole("button", { name: "Reactivate Subscription" }).click();
+    await Page.assertElementExist(page.getByText("Subscription reactivated"));
+    await page.waitForTimeout(5000);
+    await page.reload();
+    await Page.assertElementExist(
+      page.locator("td button").filter({ hasText: "Cancel" })
+    );
+  });
 });
