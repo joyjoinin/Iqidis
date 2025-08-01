@@ -46,7 +46,9 @@ export class AttachFiles {
     //   name: "Attach",
     //   exact: true,
     // });
-    this.attachButton = page.getByRole("button", { name: "Attach (9)" }).last();
+    this.attachButton = page
+      .getByRole("button", { name: "Attach (10)" })
+      .last();
     this.recentFilesButton = page.getByText("Recent Files");
     this.star = page.getByTestId("favorite-icon");
     this.yellowStar = page.locator(
@@ -78,7 +80,7 @@ export class AttachFiles {
     this.uploadNewFilesButton = page.getByText("Upload New Files");
     this.doNotAddDocumentToLibraryCheckbox = page.locator("#not-to-library");
 
-    this.closeButton = page.getByRole("button", { name: "Close", exact: true });
+    this.closeButton = page.getByRole("button", { name: "Close" }).first();
   }
 
   async clickAttachFilesIcon() {

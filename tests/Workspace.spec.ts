@@ -21,10 +21,7 @@ test.describe("Workspace", () => {
   test("Workspace homepage", async ({ page }) => {
     const Page = new Pages(page);
     await Page.assertElementsExist([
-      page
-        .locator("div")
-        .filter({ hasText: /^Seat Usage$/ })
-        .first(),
+      page.getByText("Seat Usage"),
       page.getByRole("heading", { name: "Admin Panel" }),
       page
         .locator('div[data-sentry-element="Card"]')
@@ -41,7 +38,7 @@ test.describe("Workspace", () => {
     await page.getByRole("button", { name: "Invite New Users" }).click();
     await Page.assertElementExist(page.getByText("Invite UserEmailCancelSend"));
     await page.getByRole("button", { name: "Cancel" }).click();
-    await page.getByRole("button", { name: "Organization Settings" }).click();
+    await page.getByRole("button", { name: "Settings" }).click();
     await Page.assertElementExist(
       page.getByText("Organization NameOrganization")
     );
@@ -178,6 +175,15 @@ test.describe("Workspace", () => {
     await page.getByRole("button", { name: "Manage Subscription" }).click();
     await Page.assertElementsExist([
       page.getByText("Subscription History"),
+      page.getByRole("cell", { name: "Cancel" }),
+      page.getByText("Active", { exact: true }),
+    ]);
+  });
+
+  test("subscription history", async ({ page }) => {
+    const Page = new Pages(page);
+    await page.getByRole("tab", { name: "Subscription History" }).click();
+    await Page.assertElementsExist([
       page.getByRole("cell", { name: "Cancel" }),
       page.getByText("Active", { exact: true }),
     ]);

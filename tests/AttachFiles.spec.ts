@@ -21,25 +21,22 @@ test.describe("Attach files functions", () => {
     //   page.getByText("File size or quantity exceeds")
     // );
     const FileAttached = (
-      await page
-        .locator("button[data-sentry-component='DocumentPreviewTrigger']")
-        .all()
+      await page.locator("div span").getByText("Click to preview").all()
     ).length;
-    await Page.assertElementEqualTo(9, FileAttached);
+    await Page.assertElementEqualTo(10, FileAttached);
 
     //Delete attach files
     for (let i = 0; i < 3; i++) {
       await page
-        .locator("div[data-sentry-source-file='preview-attachment.tsx'] button")
+        .getByRole("button", { name: "Click to preview" })
+        .getByRole("button")
         .first()
         .click();
       await Page.assertElementExist(page.getByText("File deleted:").last());
       await page.waitForTimeout(3000);
     }
     const restFiles = (
-      await Page.page
-        .locator("button[data-sentry-component='DocumentPreviewTrigger']")
-        .all()
+      await Page.page.locator("div span").getByText("Click to preview").all()
     ).length;
     await Page.assertElementEqualTo(FileAttached - 3, restFiles);
   });
@@ -149,9 +146,9 @@ test.describe("Attach files functions", () => {
     );
     await Page.attachFiles.attachToChat();
     await Page.assertElementExist(
-      Page.page.locator(
-        "button[data-sentry-component='DocumentPreviewTrigger']"
-      )
+      Page.page
+        .getByRole("button", { name: "Click to preview" })
+        .getByRole("button")
     );
   });
 
@@ -169,9 +166,9 @@ test.describe("Attach files functions", () => {
     );
     await Page.attachFiles.attachToChat();
     await Page.assertElementExist(
-      Page.page.locator(
-        "button[data-sentry-component='DocumentPreviewTrigger']"
-      )
+      Page.page
+        .getByRole("button", { name: "Click to preview" })
+        .getByRole("button")
     );
   });
 
