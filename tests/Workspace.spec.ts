@@ -267,7 +267,17 @@ test.describe("Workspace", () => {
   test("Buy more seats", async ({ page }) => {
     const Page = new Pages(page);
     await page.getByRole("link", { name: "Buy more seats" }).click();
+    const initialValue = await page
+      .locator("input.ant-input-number-input")
+      .getAttribute("value");
     await page.locator('button svg[data-sentry-element="Plus"]').click();
+    const valueAdjusted = await page
+      .locator("input.ant-input-number-input")
+      .getAttribute("value");
+    await Page.assertElementEqualTo(
+      Number(initialValue) + 1,
+      Number(valueAdjusted)
+    );
     await page.getByRole("button", { name: "Add Seats" }).click();
     await page.getByRole("button", { name: "Pay Now" }).click();
     await Page.assertElementExist(page.getByText("Backdev sandboxSandbox"));
