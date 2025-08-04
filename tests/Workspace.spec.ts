@@ -68,6 +68,50 @@ test.describe("Workspace", () => {
     );
   });
 
+  test("Invite user and send it to groups", async ({ page }) => {
+    const Page = new Pages(page);
+    await page.getByRole("tab", { name: "Users" }).click();
+    await page.getByRole("button", { name: "Invite User" }).click();
+    await page.getByPlaceholder("Enter email address").fill(generateEmail);
+    await page.locator(".ant-select-selection-overflow").click();
+    await page.getByText("Beijing").click();
+    await page.getByText("Sichuan").click();
+    await page.locator(".ant-select-selection-overflow").click();
+    await page.getByRole("button", { name: "Send Invitation" }).click();
+    await page.getByRole("tab", { name: "Groups" }).click();
+    await page
+      .getByRole("row", { name: "Beijing" })
+      .getByRole("button")
+      .first()
+      .click();
+    await Page.assertElementExist(
+      page.locator("tr").filter({ hasText: generateEmail })
+    );
+    await page
+      .getByRole("row", { name: generateEmail })
+      .getByRole("button")
+      .click();
+    await page.getByRole("button", { name: "Yes" }).click();
+    await page
+      .getByRole("dialog")
+      .filter({ hasText: "Manage Members " })
+      .getByLabel("Close", { exact: true })
+      .click();
+    await page
+      .getByRole("row", { name: "Sichuan" })
+      .getByRole("button")
+      .first()
+      .click();
+    await Page.assertElementExist(
+      page.locator("tr").filter({ hasText: generateEmail })
+    );
+    await page
+      .getByRole("row", { name: generateEmail })
+      .getByRole("button")
+      .click();
+    await page.getByRole("button", { name: "Yes" }).click();
+  });
+
   test("Create group/Edit/ Delete group", async ({ page }) => {
     const Page = new Pages(page);
     await page.getByRole("tab", { name: "Groups" }).click();
