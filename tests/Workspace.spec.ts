@@ -143,6 +143,35 @@ test.describe("Workspace", () => {
     await Page.assertElementEqualTo(result.length, 1);
   });
 
+  test("Filter user", async ({ page }) => {
+    const Page = new Pages(page);
+    await page.getByRole("tab", { name: "Users" }).click();
+
+    // Accepted user
+    await page.getByLabel("Users").getByText("All Status").click();
+    await page.getByText("Accepted", { exact: true }).click();
+    await Page.assertElementsExist([
+      page.getByRole("cell", { name: "ACCEPTED" }),
+      page.getByRole("cell", { name: "Owner", exact: true }),
+    ]);
+    await Page.assertElementIsNotExist(
+      page.getByRole("cell", { name: "PENDING" })
+    );
+
+    // Pending user
+    await page
+      .getByLabel("Users")
+      .locator("div")
+      .filter({ hasText: /^Accepted$/ })
+      .click();
+    await page.getByText("Pending", { exact: true }).click();
+    await Page.assertElementExist(page.getByRole("cell", { name: "PENDING" }));
+    await Page.assertElementsAreNotExist([
+      page.getByRole("cell", { name: "ACCEPTED" }),
+      page.getByRole("cell", { name: "Owner", exact: true }),
+    ]);
+  });
+
   test("Create group/Edit/ Delete group", async ({ page }) => {
     const Page = new Pages(page);
     await page.getByRole("tab", { name: "Groups" }).click();
