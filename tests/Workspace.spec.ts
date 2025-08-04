@@ -116,6 +116,33 @@ test.describe("Workspace", () => {
     await page.getByRole("button", { name: "OK" }).click();
   });
 
+  test("Search user", async ({ page }) => {
+    const Page = new Pages(page);
+    await page.getByRole("tab", { name: "Users" }).click();
+    await page
+      .getByRole("textbox", { name: "Search by name or email" })
+      .click();
+
+    // invalid user
+    await page
+      .getByPlaceholder("Search by name or email")
+      .fill("test@57blocks.com");
+    await Page.assertElementIsNotExist(
+      page.getByRole("cell", { name: "test@57blocks.com" })
+    );
+
+    //
+    await page
+      .getByPlaceholder("Search by name or email")
+      .fill("joy+05@57blocks.com");
+    await Page.assertElementExist(
+      page.getByRole("cell", { name: "joy+05@57blocks.com" })
+    );
+
+    const result = await page.locator("tbody tr").all();
+    await Page.assertElementEqualTo(result.length, 1);
+  });
+
   test("Create group/Edit/ Delete group", async ({ page }) => {
     const Page = new Pages(page);
     await page.getByRole("tab", { name: "Groups" }).click();
