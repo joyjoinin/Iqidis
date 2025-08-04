@@ -88,11 +88,6 @@ test.describe("Workspace", () => {
       page.locator("tr").filter({ hasText: generateEmail })
     );
     await page
-      .getByRole("row", { name: generateEmail })
-      .getByRole("button")
-      .click();
-    await page.getByRole("button", { name: "Yes" }).click();
-    await page
       .getByRole("dialog")
       .filter({ hasText: "Manage Members " })
       .getByLabel("Close", { exact: true })
@@ -106,10 +101,19 @@ test.describe("Workspace", () => {
       page.locator("tr").filter({ hasText: generateEmail })
     );
     await page
+      .getByRole("dialog")
+      .filter({ hasText: "Manage Members " })
+      .getByLabel("Close", { exact: true })
+      .click();
+
+    // delete user to clean data
+    await page.getByRole("tab", { name: "Users" }).click();
+    await page
       .getByRole("row", { name: generateEmail })
       .getByRole("button")
+      .nth(1)
       .click();
-    await page.getByRole("button", { name: "Yes" }).click();
+    await page.getByRole("button", { name: "OK" }).click();
   });
 
   test("Create group/Edit/ Delete group", async ({ page }) => {
