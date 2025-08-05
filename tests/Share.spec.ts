@@ -84,6 +84,35 @@ test.describe("Share ", () => {
     );
   });
 
+  test("Enabled/Disabled share", async ({ page }) => {
+    const Page = new Pages(page);
+    await Page.library.clickLibrary();
+    await Page.library.sharedButton.click();
+    await page.waitForTimeout(3000);
+    // Disable share
+    await page
+      .locator("tr")
+      .filter({ hasText: "innerShareOne" })
+      .getByText("Enabled")
+      .click();
+    await page.getByText("Disabled", { exact: true }).last().click();
+    await Page.assertElementExist(
+      page.getByText("Status updated successfully")
+    );
+
+    // Enable share
+    await page
+      .locator("tr")
+      .filter({ hasText: "innerShareOne" })
+      .getByText("Disabled")
+      .last()
+      .click();
+    await page.getByText("Enabled", { exact: true }).last().click();
+    await Page.assertElementExist(
+      page.getByText("Status updated successfully")
+    );
+  });
+
   test("Approve/Reject share", async ({ page }) => {
     const Page = new Pages(page);
     await Page.library.clickLibrary();
