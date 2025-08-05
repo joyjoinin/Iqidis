@@ -34,8 +34,9 @@ test.describe("Library functions", () => {
     await Page.assertElementExist(page.getByText("Upload Documents"));
   });
 
-  test("Create folder", async ({ page }) => {
+  test("Create folder/Share folder", async ({ page }) => {
     const Page = new Pages(page);
+    const regex = new RegExp(`^${folderName}$`);
     await Page.library.clickLibrary();
     await Page.library.clickFolders();
     await Page.library.clickNewFolders();
@@ -50,6 +51,20 @@ test.describe("Library functions", () => {
         .filter({ hasText: /^Create New Folder$/ })
         .last(),
     ]);
+    await page
+      .locator("div")
+      .filter({ hasText: regex })
+      .getByRole("img")
+      .click();
+    await page.getByText("Share", { exact: true }).click();
+    await page.getByRole("checkbox", { name: "Select Shanghai" }).check();
+    await page.getByRole("button", { name: "Share" }).click();
+    await Page.assertElementExist(page.getByText("Share folder successfully"));
+    await Page.library.sharedButton.click();
+    await page.waitForTimeout(3000);
+    await page.getByText("Inner Share").click();
+    await page.getByText("Folder Share").click();
+    await Page.assertElementExist(page.getByRole("cell", { name: folderName }));
   });
 
   test("Move Files", async ({ page }) => {
