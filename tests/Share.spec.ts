@@ -83,4 +83,27 @@ test.describe("Share ", () => {
       page.getByRole("cell", { name: "UploadFile1.pdf" })
     );
   });
+
+  test("Approve/Reject share", async ({ page }) => {
+    const Page = new Pages(page);
+    await Page.library.clickLibrary();
+    await Page.library.sharedButton.click();
+    await page.waitForTimeout(3000);
+    await page.getByText("Inner Share").click();
+    await page.getByText("Public Share").click();
+    await page.getByRole("main").getByText("Approved").last().click();
+    await page.getByText("Rejected", { exact: true }).click();
+    await Page.assertElementExist(
+      page.getByText("Status updated successfully")
+    );
+    await Page.assertElementIsNotExist(
+      page.getByRole("row").getByRole("button")
+    );
+    await page.getByRole("main").getByText("Rejected").last().click();
+    await page.getByText("Approved", { exact: true }).click();
+    await Page.assertElementsExist([
+      page.getByText("Status updated successfully"),
+      page.getByRole("row").getByRole("button"),
+    ]);
+  });
 });
