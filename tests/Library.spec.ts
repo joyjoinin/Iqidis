@@ -82,6 +82,7 @@ test.describe("Library functions", () => {
     await page
       .getByRole("row", { name: document })
       .getByRole("checkbox")
+      .first()
       .check();
     await Page.library.moveFile();
     await Page.library.selectFolder();
@@ -92,7 +93,7 @@ test.describe("Library functions", () => {
     await Page.library.clickFolders();
     // last folder
     await page
-      .locator('div[role="tabpanel"] > div > div > div:nth-child(2)')
+      .locator('div[role="tabpanel"] > div > div > div:nth-last-child(2)')
       .click();
     await Page.assertElementExist(page.getByText(document));
   });
