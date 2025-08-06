@@ -152,6 +152,19 @@ test.describe("Attach files functions", () => {
     );
   });
 
+  test("Search from Recent", async ({ page }) => {
+    const Page = new Pages(page);
+    await Page.attachFiles.clickAttachFilesIcon();
+    await Page.attachFiles.clickRecentFiles();
+    await page
+      .getByPlaceholder("Search documents...")
+      .fill("joy01-personal-foldershare.txt");
+    await page.keyboard.press("Enter");
+    await page.waitForTimeout(10000);
+    const text = await page.getByRole("button", { name: "Recent" }).innerText();
+    await Page.assertElementExist(page.getByText(text));
+  });
+
   test("Upload new from Upload New Files", async ({ page }) => {
     const Page = new Pages(page);
     await Page.attachFiles.clickAttachFilesIcon();
