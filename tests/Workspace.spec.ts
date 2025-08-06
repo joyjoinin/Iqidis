@@ -255,7 +255,9 @@ test.describe("Workspace", () => {
       .getByPlaceholder("Enter organization description (optional)")
       .fill(settings.description);
     await page.getByRole("button", { name: "Save Changes" }).click();
-    await Page.assertElementExist(page.getByText(settings.name));
+    await Page.assertElementExist(
+      page.getByText(settings.name, { exact: true })
+    );
     await page.waitForTimeout(3000);
     await page.getByPlaceholder("Enter organization name").fill(origin.name);
     await page

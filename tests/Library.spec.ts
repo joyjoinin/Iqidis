@@ -98,6 +98,44 @@ test.describe("Library functions", () => {
     await Page.assertElementExist(page.getByText(document));
   });
 
+  test("Move Files by action", async ({ page }) => {
+    const Page = new Pages(page);
+    const document = "MoveTwo.pdf";
+    await Page.library.clickLibrary();
+    await Page.library.uploadFile();
+    await Page.library.clickSelectFiles();
+    await Page.library.inputFile(document);
+    await Page.library.upload();
+    await Page.assertElementExist(
+      page.getByText("1 files uploaded successfully")
+    );
+    await Page.library.closeUpload();
+    await page
+      .getByRole("row", { name: document })
+      .getByRole("checkbox")
+      .first()
+      .check();
+
+    await page
+      .locator("tr")
+      .filter({ hasText: document })
+      .locator("svg")
+      .last()
+      .click();
+    await page.getByRole("menuitem", { name: "Move File" }).click();
+    await Page.library.selectFolder();
+    await Page.library.move();
+    await Page.assertElementExist(
+      page.getByText("Document(s) moved successfully")
+    );
+    await Page.library.clickFolders();
+    // last folder
+    await page
+      .locator('div[role="tabpanel"] > div > div > div:nth-last-child(2)')
+      .click();
+    await Page.assertElementExist(page.getByText(document));
+  });
+
   test("Edit folder", async ({ page }) => {
     const Page = new Pages(page);
     await Page.library.clickLibrary();
