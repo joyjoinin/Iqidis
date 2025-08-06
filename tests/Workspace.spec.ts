@@ -309,17 +309,28 @@ test.describe("Workspace", () => {
     const Page = new Pages(page);
     await page.getByRole("tab", { name: "Subscription History" }).click();
     await page.locator("td button").filter({ hasText: "Cancel" }).click();
+    await page.getByRole("button", { name: "Keep Subscription" }).click();
+    await Page.assertElementExist(
+      page.locator("td").filter({ hasText: "Active" })
+    );
+    await page.locator("td button").filter({ hasText: "Cancel" }).click();
     await page.getByRole("button", { name: "Cancel Subscription" }).click();
-    await page.waitForTimeout(10000);
+    await page.waitForTimeout(15000);
+    await page.reload();
     await Page.assertElementExist(
       page.getByRole("alert").filter({ hasText: "Subscription Cancellation" })
     );
+    await page.waitForTimeout(15000);
+    await Page.assertElementExist(
+      page.locator("td").filter({ hasText: "Canceled" })
+    );
     await page.getByRole("button", { name: "Reactivate Subscription" }).click();
     await Page.assertElementExist(page.getByText("Subscription reactivated"));
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(15000);
     await page.reload();
-    await Page.assertElementExist(
-      page.locator("td button").filter({ hasText: "Cancel" })
-    );
+    await Page.assertElementsExist([
+      page.locator("td button").filter({ hasText: "Cancel" }),
+      page.locator("td").filter({ hasText: "Active" }),
+    ]);
   });
 });
