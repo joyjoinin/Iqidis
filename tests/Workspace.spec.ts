@@ -266,9 +266,9 @@ test.describe("Workspace", () => {
     await page.getByRole("button", { name: "Save Changes" }).click();
   });
 
-  test("Buy more seats", async ({ page }) => {
+  test("Purchase more seats", async ({ page }) => {
     const Page = new Pages(page);
-    await page.getByRole("link", { name: "Buy more seats" }).click();
+    await page.getByRole("link", { name: "Purchase more seats" }).click();
     const initialValue = await page
       .locator("input.ant-input-number-input")
       .getAttribute("value");
@@ -287,7 +287,7 @@ test.describe("Workspace", () => {
 
   test("Manage subscription", async ({ page }) => {
     const Page = new Pages(page);
-    await page.getByRole("link", { name: "Buy more seats" }).click();
+    await page.getByRole("link", { name: "Purchase more seats" }).click();
     await page.getByRole("button", { name: "Manage Subscription" }).click();
     await Page.assertElementsExist([
       page.getByText("Subscription History"),
@@ -296,7 +296,7 @@ test.describe("Workspace", () => {
     ]);
   });
 
-  test("subscription history", async ({ page }) => {
+  test("Subscription history", async ({ page }) => {
     const Page = new Pages(page);
     await page.getByRole("tab", { name: "Subscription History" }).click();
     await Page.assertElementsExist([
@@ -315,18 +315,19 @@ test.describe("Workspace", () => {
     );
     await page.locator("td button").filter({ hasText: "Cancel" }).click();
     await page.getByRole("button", { name: "Cancel Subscription" }).click();
-    await page.waitForTimeout(15000);
+    await page.waitForTimeout(25000);
     await page.reload();
     await Page.assertElementExist(
       page.getByRole("alert").filter({ hasText: "Subscription Cancellation" })
     );
-    await page.waitForTimeout(15000);
+    await page.waitForTimeout(20000);
+    await page.reload();
     await Page.assertElementExist(
       page.locator("td").filter({ hasText: "Canceled" })
     );
     await page.getByRole("button", { name: "Reactivate Subscription" }).click();
     await Page.assertElementExist(page.getByText("Subscription reactivated"));
-    await page.waitForTimeout(15000);
+    await page.waitForTimeout(30000);
     await page.reload();
     await Page.assertElementsExist([
       page.locator("td button").filter({ hasText: "Cancel" }),

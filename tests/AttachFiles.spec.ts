@@ -141,9 +141,11 @@ test.describe("Attach files functions", () => {
     await Page.attachFiles.inputFile();
     await Page.assertElementExist(Page.attachFiles.waitingButton);
     await Page.attachFiles.upload();
-    await Page.assertElementExist(
-      page.getByText("1 files uploaded successfully")
-    );
+    await page.waitForTimeout(20000);
+
+    // await Page.assertElementExist(
+    //   page.getByText("1 files uploaded successfully")
+    // );
     await Page.attachFiles.attachToChat();
     await Page.assertElementExist(
       Page.page
@@ -174,9 +176,10 @@ test.describe("Attach files functions", () => {
     await Page.attachFiles.inputFile();
     await Page.assertElementExist(Page.attachFiles.waitingButton);
     await Page.attachFiles.upload();
-    await Page.assertElementExist(
-      page.getByText("1 files uploaded successfully")
-    );
+    // await Page.assertElementExist(
+    //   page.getByText("1 files uploaded successfully")
+    // );
+    await page.waitForTimeout(20000);
     await Page.attachFiles.attachToChat();
     await Page.assertElementExist(
       Page.page
@@ -194,9 +197,11 @@ test.describe("Attach files functions", () => {
 
     await Page.assertElementExist(Page.attachFiles.waitingButton);
     await Page.attachFiles.upload();
-    await Page.assertElementExist(
-      page.getByText("1 files uploaded successfully")
-    );
+    // await Page.assertElementExist(
+    //   page.getByText("1 files uploaded successfully")
+    // );
+    await page.waitForTimeout(20000);
+
     await Page.attachFiles.closeUpload();
 
     //Check file

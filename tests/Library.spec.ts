@@ -64,7 +64,9 @@ test.describe("Library functions", () => {
     await page.waitForTimeout(3000);
     await page.getByText("Inner Share").click();
     await page.getByText("Folder Share").click();
-    await Page.assertElementExist(page.getByRole("cell", { name: folderName }));
+    await Page.assertElementExist(
+      page.getByRole("cell", { name: folderName }).last()
+    );
   });
 
   test("Move Files", async ({ page }) => {
