@@ -51,4 +51,23 @@ test.describe("Workspace", () => {
         .filter({ hasText: `$${amount}.00/month` }),
     ]);
   });
+
+  test("Set minimum Seats", async ({ page }) => {
+    const Page = new Pages(page);
+    const seats = getRandomNumberString();
+    await page.getByRole("button", { name: "Organization" }).click();
+    await page
+      .getByRole("row", { name: "Joy test 2025-07-28 ACTIVE" })
+      .getByRole("img")
+      .nth(2)
+      .click();
+    await page.getByRole("spinbutton").fill(seats);
+    await page.keyboard.press("Enter");
+    await Page.assertElementExist(
+      page
+        .getByRole("row", { name: "Joy test 2025-07-28 ACTIVE" })
+        .locator("td:nth-child(5)")
+        .filter({ hasText: seats })
+    );
+  });
 });
