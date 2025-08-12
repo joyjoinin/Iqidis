@@ -1,7 +1,7 @@
 import { test } from "@playwright/test";
 import Pages from "../common/page";
 
-test.describe("Workspace", () => {
+test.describe("User manage", () => {
   const planName = "Test" + Date.now().toString();
   const description = "description" + Date.now().toString();
 
@@ -104,5 +104,24 @@ test.describe("Workspace", () => {
     await page.getByRole("button").filter({ hasText: /^$/ }).click();
     await page.getByRole("button", { name: "Save" }).click();
     await Page.assertElementExist(page.getByText("Pricing settings saved"));
+  });
+
+  test("Search organization", async ({ page }) => {
+    // Search not exist one
+    const Page = new Pages(page);
+    await page.getByRole("button", { name: "Organization" }).click();
+
+    await page
+      .getByPlaceholder("Search organizations by name")
+      .fill("Not exist one");
+    await Page.assertElementExist(
+      page.getByRole("cell", { name: "No organizations found" })
+    );
+
+    // Search exist one
+    await page.getByPlaceholder("Search organizations by name").fill("China");
+    await Page.assertElementsExist(
+      await page.getByRole("cell", { name: "China" }).all()
+    );
   });
 });
