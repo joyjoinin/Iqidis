@@ -81,4 +81,28 @@ test.describe("Workspace", () => {
       page.getByText("NO SUBSCRIPTION", { exact: true }).first(),
     ]);
   });
+
+  test("Price settings", async ({ page }) => {
+    // Add tier
+    const Page = new Pages(page);
+    await page.getByRole("button", { name: "Organization" }).click();
+    await page
+      .getByRole("row", { name: "Joy test 2025-07-28 ACTIVE" })
+      .getByRole("button")
+      .click();
+    await page.getByRole("button", { name: "Add Tier" }).click();
+    await page.getByPlaceholder("Enter minimum seats").nth(1).fill("10");
+    await page.getByRole("combobox").nth(1).click();
+    await page.getByLabel("Joy Test 002 ($199.00/seat/").click();
+    await page.getByRole("button", { name: "Save" }).click();
+
+    // Delete tier
+    await page
+      .getByRole("row", { name: "Joy test 2025-07-28 ACTIVE" })
+      .getByRole("button")
+      .click();
+    await page.getByRole("button").filter({ hasText: /^$/ }).click();
+    await page.getByRole("button", { name: "Save" }).click();
+    await Page.assertElementExist(page.getByText("Pricing settings saved"));
+  });
 });
