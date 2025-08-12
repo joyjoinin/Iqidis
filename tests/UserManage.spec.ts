@@ -70,4 +70,15 @@ test.describe("Workspace", () => {
         .filter({ hasText: seats })
     );
   });
+
+  test("Check different status", async ({ page }) => {
+    const Page = new Pages(page);
+    await page.getByRole("button", { name: "Organization" }).click();
+    await Page.assertElementsExist([
+      page.getByText("CANCELED AT PERIOD END").first(),
+      page.getByText("CANCELED", { exact: true }).first(),
+      page.getByText("ACTIVE", { exact: true }).first(),
+      page.getByText("NO SUBSCRIPTION", { exact: true }).first(),
+    ]);
+  });
 });
