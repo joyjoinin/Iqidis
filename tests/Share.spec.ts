@@ -22,7 +22,7 @@ test.describe("Share ", () => {
     await page.getByRole("menuitem", { name: "Manage Organization" }).click();
     await page.getByRole("tab", { name: "Settings" }).click();
     await page.locator('div[data-sentry-element="Select"]').click();
-    await page.getByText("Inner", { exact: true }).click();
+    await page.getByText("Inner", { exact: true }).last().click();
     await page.getByRole("button", { name: "Save Changes" }).click();
   });
 
@@ -32,7 +32,7 @@ test.describe("Share ", () => {
     await page.getByRole("menuitem", { name: "Manage Organization" }).click();
     await page.getByRole("tab", { name: "Settings" }).click();
     await page.locator('div[data-sentry-element="Select"]').click();
-    await page.getByText("Require Approval", { exact: true }).click();
+    await page.getByText("Require Approval", { exact: true }).last().click();
     await page.getByRole("button", { name: "Save Changes" }).click();
   });
 
