@@ -25,7 +25,9 @@ export class Library {
 
   constructor(page: Page) {
     this.page = page;
-    this.libraryButton = page.getByRole("link").nth(2);
+    this.libraryButton = page
+      .locator('ul li[class="group/menu-item relative"]')
+      .nth(2);
     this.uploadFileButton = page.getByRole("button", { name: "Upload" });
     this.selectFilesButton = page.getByRole("button", {
       name: "Select files",

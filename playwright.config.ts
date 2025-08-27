@@ -35,6 +35,7 @@ export default defineConfig({
     baseURL:
       process.env.baseURL ||
       "https://iqidisai-git-feat-multi-tenancy-iqidis.vercel.app",
+    // "https://iqidisai-git-feat-libraryv2-iqidis.vercel.app/library/v2",
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "retain-on-failure",
     video: { mode: "retain-on-failure", size: { width: 1720, height: 1080 } },
@@ -53,6 +54,7 @@ export default defineConfig({
         // channel: "chrome",
         viewport: { width: 1720, height: 1080 },
         storageState: ".auth/template.json",
+        // storageState: ".auth/V2.json",
         headless: true,
         // headless: false,
         launchOptions: {

@@ -87,6 +87,8 @@ test.describe("Share ", () => {
   test("Enabled/Disabled share", async ({ page }) => {
     const Page = new Pages(page);
     await Page.library.clickLibrary();
+    await page.waitForTimeout(3000);
+
     await Page.library.sharedButton.click();
     await page.waitForTimeout(3000);
     // Disable share
@@ -116,6 +118,8 @@ test.describe("Share ", () => {
   test("Approve/Reject share", async ({ page }) => {
     const Page = new Pages(page);
     await Page.library.clickLibrary();
+    await page.waitForTimeout(3000);
+
     await Page.library.sharedButton.click();
     await page.waitForTimeout(3000);
     await page.getByText("Inner Share").click();

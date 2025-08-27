@@ -88,7 +88,7 @@ test.describe("User manage", () => {
     const Page = new Pages(page);
     await page.getByRole("menuitem", { name: "Organization" }).click();
     await page
-      .getByRole("row", { name: "Joy test 2025-07-28 ACTIVE" })
+      .getByRole("row", { name: "China 2025-07-28 ACTIVE" })
       .getByRole("button")
       .click();
     await page.getByRole("button", { name: "Add Tier" }).click();
@@ -99,7 +99,7 @@ test.describe("User manage", () => {
 
     // Delete tier
     await page
-      .getByRole("row", { name: "Joy test 2025-07-28 ACTIVE" })
+      .getByRole("row", { name: "China 2025-07-28 ACTIVE" })
       .getByRole("button")
       .click();
     await page.getByRole("button").filter({ hasText: /^$/ }).click();

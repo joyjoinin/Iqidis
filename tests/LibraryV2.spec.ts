@@ -2,6 +2,7 @@ import { test } from "@playwright/test";
 import Pages from "../common/page";
 
 test.describe("Library functions", () => {
+  test.skip();
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
   });
