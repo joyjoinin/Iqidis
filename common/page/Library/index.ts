@@ -149,7 +149,7 @@ export class Library {
   async clickMore() {
     await this.page
       .locator(
-        'svg[class="lucide lucide-ellipsis size-4 dark:group-hover:text-white group-hover:text-function-message"]'
+        'svg[class="lucide lucide-ellipsis size-4 group-hover:text-function-message"]'
       )
       .last()
       .click();

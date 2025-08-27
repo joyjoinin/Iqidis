@@ -4,6 +4,11 @@ import Pages from "../common/page";
 test.describe("Library functions", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
+    await page
+      .locator('ul li[class="group/menu-item relative"]')
+      .nth(2)
+      .click();
+    await page.waitForTimeout(3000);
   });
 
   function generateRandomString(length: number = 16): string {
@@ -21,7 +26,6 @@ test.describe("Library functions", () => {
 
   test("Upload from Library", async ({ page }) => {
     const Page = new Pages(page);
-    await Page.library.clickLibrary();
     await Page.library.uploadFile();
     await Page.library.clickSelectFiles();
     await Page.library.inputFile();
@@ -37,7 +41,6 @@ test.describe("Library functions", () => {
   test("Create folder/Share folder", async ({ page }) => {
     const Page = new Pages(page);
     const regex = new RegExp(`^${folderName}$`);
-    await Page.library.clickLibrary();
     await Page.library.clickFolders();
     await Page.library.clickNewFolders();
     await Page.library.inputFolderName(folderName);
@@ -72,7 +75,6 @@ test.describe("Library functions", () => {
   test("Move Files", async ({ page }) => {
     const Page = new Pages(page);
     const document = "MoveOne.pdf";
-    await Page.library.clickLibrary();
     await Page.library.uploadFile();
     await Page.library.clickSelectFiles();
     await Page.library.inputFile(document);
@@ -103,7 +105,6 @@ test.describe("Library functions", () => {
   test("Move Files by action", async ({ page }) => {
     const Page = new Pages(page);
     const document = "MoveTwo.pdf";
-    await Page.library.clickLibrary();
     await Page.library.uploadFile();
     await Page.library.clickSelectFiles();
     await Page.library.inputFile(document);
@@ -140,7 +141,6 @@ test.describe("Library functions", () => {
 
   test("Edit folder", async ({ page }) => {
     const Page = new Pages(page);
-    await Page.library.clickLibrary();
     await Page.library.clickFolders();
     await Page.library.clickMore();
     await Page.library.edit();
@@ -154,7 +154,6 @@ test.describe("Library functions", () => {
 
   test("Delete folder", async ({ page }) => {
     const Page = new Pages(page);
-    await Page.library.clickLibrary();
     await Page.library.clickFolders();
     await Page.library.clickMore();
     await Page.library.delete();
@@ -167,7 +166,6 @@ test.describe("Library functions", () => {
   test("Delete file by Actions", async ({ page }) => {
     const Page = new Pages(page);
     const document = "DeleteOneByActions.pdf";
-    await Page.library.clickLibrary();
     await Page.library.uploadFile();
     await Page.library.clickSelectFiles();
     await Page.library.inputFile(document);
@@ -194,7 +192,6 @@ test.describe("Library functions", () => {
   test("Delete file ", async ({ page }) => {
     const Page = new Pages(page);
     const document = "DeleteOne.pdf";
-    await Page.library.clickLibrary();
     await Page.library.uploadFile();
     await Page.library.clickSelectFiles();
     await Page.library.inputFile(document);
@@ -221,7 +218,6 @@ test.describe("Library functions", () => {
   test("Can't upload large file", async ({ page }) => {
     const Page = new Pages(page);
     const document = "LargeFile.pdf";
-    await Page.library.clickLibrary();
     await Page.library.uploadFile();
     await Page.library.clickSelectFiles();
     await Page.library.inputFile(document);
@@ -231,7 +227,6 @@ test.describe("Library functions", () => {
   test("Search file", async ({ page }) => {
     const Page = new Pages(page);
     const document = "SearchOne.pdf";
-    await Page.library.clickLibrary();
     await Page.library.searchDocument("noExistOne");
     await Page.assertElementExist(page.getByRole("img", { name: "No data" }));
     await Page.library.searchDocument(document);
