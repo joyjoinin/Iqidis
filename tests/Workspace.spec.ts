@@ -28,7 +28,7 @@ test.describe("Workspace", () => {
         .getByText("Quick Actions"),
       page.getByRole("tab", { name: "Overview" }),
       page.getByRole("tab", { name: "Users" }),
-      page.getByRole("tab", { name: "Groups" }),
+      page.getByRole("tab", { name: "Workspaces" }),
       page.getByRole("tab", { name: "Settings" }),
     ]);
   });
@@ -68,7 +68,7 @@ test.describe("Workspace", () => {
     );
   });
 
-  test("Invite user and send it to groups", async ({ page }) => {
+  test("Invite user and send it to workspace", async ({ page }) => {
     const Page = new Pages(page);
     await page.getByRole("tab", { name: "Users" }).click();
     await page.getByRole("button", { name: "Invite User" }).click();
@@ -78,7 +78,7 @@ test.describe("Workspace", () => {
     await page.getByText("Sichuan").click();
     await page.locator(".ant-select-selection-overflow").click();
     await page.getByRole("button", { name: "Send Invitation" }).click();
-    await page.getByRole("tab", { name: "Groups" }).click();
+    await page.getByRole("tab", { name: "Workspaces" }).click();
     await page
       .getByRole("row", { name: "Beijing" })
       .getByRole("button")
@@ -172,18 +172,18 @@ test.describe("Workspace", () => {
     ]);
   });
 
-  test("Create group/Edit/ Delete group", async ({ page }) => {
+  test("Create workspace/Edit/ Delete workspace", async ({ page }) => {
     const Page = new Pages(page);
-    await page.getByRole("tab", { name: "Groups" }).click();
-    await page.getByRole("button", { name: "Create Group" }).click();
-    await page.getByPlaceholder("Enter group name").fill(newGroup.name);
+    await page.getByRole("tab", { name: "Workspaces" }).click();
+    await page.getByRole("button", { name: "Create Workspace" }).click();
+    await page.getByPlaceholder("Enter workspace name").fill(newGroup.name);
     await page
-      .getByPlaceholder("Enter group description")
+      .getByPlaceholder("Enter workspace description")
       .fill(newGroup.description);
     await page.waitForTimeout(3000);
     await page
-      .getByLabel("Create Group")
-      .getByRole("button", { name: "Create Group" })
+      .getByLabel("Create workspace")
+      .getByRole("button", { name: "Create Workspace" })
       .click();
     await Page.assertElementExist(
       page
@@ -198,13 +198,13 @@ test.describe("Workspace", () => {
       .getByRole("button")
       .nth(1)
       .click();
-    await page.getByPlaceholder("Enter group name").clear();
-    await page.getByPlaceholder("Enter group name").fill("edit");
-    await page.getByPlaceholder("Enter group description").clear();
+    await page.getByPlaceholder("Enter workspace name").clear();
+    await page.getByPlaceholder("Enter workspace name").fill("edit");
+    await page.getByPlaceholder("Enter workspace description").clear();
     await page
-      .getByPlaceholder("Enter group description")
+      .getByPlaceholder("Enter workspace description")
       .fill("edit description");
-    await page.getByRole("button", { name: "Update Group" }).click();
+    await page.getByRole("button", { name: "Update workspace" }).click();
     await page
       .locator("tr")
       .filter({ hasText: "edit" })
@@ -216,34 +216,36 @@ test.describe("Workspace", () => {
       page
         .locator("tr")
         .filter({ hasText: "edit" })
-        .getByRole("cell", { name: "Enter group description" })
+        .getByRole("cell", { name: "Enter workspace description" })
     );
   });
 
-  test("Invite user/Delete user in group", async ({ page }) => {
+  test("Invite user/Delete user in workspace", async ({ page }) => {
     const Page = new Pages(page);
-    await page.getByRole("tab", { name: "Groups" }).click();
+    await page.getByRole("tab", { name: "Workspaces" }).click();
     await page
       .getByRole("row", { name: "Shanghai test" })
       .getByRole("button")
       .first()
       .click();
     await page.locator("#seatId").click();
-    await page.getByText("joy+04@57blocks.com").click();
+    await page.getByText("joy+05@57blocks.com").click();
     await page.waitForTimeout(3000);
-    await page.getByRole("button", { name: "Add Member" }).click();
+    await page.getByRole("button", { name: "Add Members" }).click();
     await Page.assertElementsExist([
-      page.getByText("Member added to group"),
-      page.getByRole("row", { name: "joy+04@57blocks.com" }),
+      page.getByText("1 member added to workspace successfully"),
+      page.getByRole("row", { name: "joy+05@57blocks.com" }),
     ]);
     await page
-      .getByRole("row", { name: "joy+04@57blocks.com Member" })
+      .getByRole("row", { name: "joy+05@57blocks.com Member" })
       .getByRole("button")
       .click();
     await page.getByRole("button", { name: "Yes" }).click();
-    await Page.assertElementExist(page.getByText("Member removed from group"));
+    await Page.assertElementExist(
+      page.getByText("Member removed from workspace successfully")
+    );
     await Page.assertElementIsNotExist(
-      page.getByRole("row", { name: "joy+04@57blocks.com" })
+      page.getByRole("row", { name: "joy+05@57blocks.com" })
     );
   });
 
