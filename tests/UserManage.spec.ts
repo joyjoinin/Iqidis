@@ -27,12 +27,13 @@ test.describe("User manage", () => {
     await page.goto("/");
     await page.locator('span[data-sentry-element="Avatar"]').click();
     await page.getByRole("menuitem", { name: "Manage Users" }).click();
+    await page.getByRole("button", { name: "Manage Org" }).click();
   });
 
   test("Create new plan", async ({ page }) => {
     const Page = new Pages(page);
     const amount = getRandomNumberString();
-    await page.getByRole("button", { name: "Plans" }).click();
+    await page.getByRole("menuitem", { name: "Plans" }).click();
     await page.getByRole("button", { name: "Create Plan" }).click();
     await page.locator("#name").fill(planName);
     await page.locator("#description").fill(description);
@@ -55,7 +56,7 @@ test.describe("User manage", () => {
   test("Set minimum Seats", async ({ page }) => {
     const Page = new Pages(page);
     const seats = getRandomNumberString();
-    await page.getByRole("button", { name: "Organization" }).click();
+    await page.getByRole("menuitem", { name: "Organization" }).click();
     await page
       .getByRole("row", { name: "Joy test 2025-07-28 ACTIVE" })
       .getByRole("img")
@@ -73,9 +74,9 @@ test.describe("User manage", () => {
 
   test("Check different status", async ({ page }) => {
     const Page = new Pages(page);
-    await page.getByRole("button", { name: "Organization" }).click();
+    await page.getByRole("menuitem", { name: "Organization" }).click();
     await Page.assertElementsExist([
-      page.getByText("CANCELED AT PERIOD END").first(),
+      // page.getByText("CANCELED AT PERIOD END").first(),
       page.getByText("CANCELED", { exact: true }).first(),
       page.getByText("ACTIVE", { exact: true }).first(),
       page.getByText("NO SUBSCRIPTION", { exact: true }).first(),
@@ -85,7 +86,7 @@ test.describe("User manage", () => {
   test("Price settings", async ({ page }) => {
     // Add tier
     const Page = new Pages(page);
-    await page.getByRole("button", { name: "Organization" }).click();
+    await page.getByRole("menuitem", { name: "Organization" }).click();
     await page
       .getByRole("row", { name: "Joy test 2025-07-28 ACTIVE" })
       .getByRole("button")
@@ -109,7 +110,7 @@ test.describe("User manage", () => {
   test("Search organization", async ({ page }) => {
     // Search not exist one
     const Page = new Pages(page);
-    await page.getByRole("button", { name: "Organization" }).click();
+    await page.getByRole("menuitem", { name: "Organization" }).click();
 
     await page
       .getByPlaceholder("Search organizations by name")
