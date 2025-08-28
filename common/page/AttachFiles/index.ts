@@ -30,7 +30,9 @@ export class AttachFiles {
     this.attachFileButton = page.locator(
       "button[data-role='attachments-button']"
     );
-    this.libraryFilesButton = page.getByText("Library Files");
+    this.libraryFilesButton = page.getByRole("button", {
+      name: "Browse Library",
+    });
     this.allDocumentsButton = page.getByText("All Documents");
     this.filterButton = page.locator(
       "div[data-sentry-element='DropdownMenuTrigger']"
