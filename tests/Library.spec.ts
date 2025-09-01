@@ -60,7 +60,7 @@ test.describe("Library functions", () => {
       .getByRole("img")
       .click();
     await page.getByText("Share", { exact: true }).click();
-    await page.getByRole("checkbox", { name: "Select Shanghai" }).check();
+    await page.getByRole("checkbox", { name: "Select Test 002" }).check();
     await page.getByRole("button", { name: "Share" }).click();
     await Page.assertElementExist(page.getByText("Share folder successfully"));
     await Page.library.sharedButton.click();
