@@ -151,12 +151,10 @@ test.describe("Attach files functions", () => {
     await Page.attachFiles.clickRecentFiles();
     await page
       .getByPlaceholder("Search documents...")
-      .fill("joy01-personal-foldershare.txt");
+      .fill("searchFromRecent.txt");
     await page.keyboard.press("Enter");
     await page.waitForTimeout(10000);
-    await Page.assertElementExist(
-      page.getByText("joy01-personal-foldershare.txt")
-    );
+    await Page.assertElementExist(page.getByText("searchFromRecent.txt"));
   });
 
   test("Upload new from Upload New Files", async ({ page }) => {
