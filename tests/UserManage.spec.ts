@@ -58,7 +58,7 @@ test.describe("User manage", () => {
     const seats = getRandomNumberString();
     await page.getByRole("menuitem", { name: "Organization" }).click();
     await page
-      .getByRole("row", { name: "Joy test 2025-07-28 ACTIVE" })
+      .getByRole("row", { name: "Automation" })
       .getByRole("img")
       .nth(2)
       .click();
@@ -66,7 +66,7 @@ test.describe("User manage", () => {
     await page.keyboard.press("Enter");
     await Page.assertElementExist(
       page
-        .getByRole("row", { name: "Joy test 2025-07-28 ACTIVE" })
+        .getByRole("row", { name: "Automation" })
         .locator("td:nth-child(5)")
         .filter({ hasText: seats })
     );
@@ -88,8 +88,9 @@ test.describe("User manage", () => {
     const Page = new Pages(page);
     await page.getByRole("menuitem", { name: "Organization" }).click();
     await page
-      .getByRole("row", { name: "China 2025-07-28 ACTIVE" })
+      .getByRole("row", { name: "Joy test" })
       .getByRole("button")
+      .last()
       .click();
     await page.getByRole("button", { name: "Add Tier" }).click();
     await page.getByPlaceholder("Enter minimum seats").nth(1).fill("10");
@@ -99,8 +100,9 @@ test.describe("User manage", () => {
 
     // Delete tier
     await page
-      .getByRole("row", { name: "China 2025-07-28 ACTIVE" })
+      .getByRole("row", { name: "Joy test	" })
       .getByRole("button")
+      .last()
       .click();
     await page.getByRole("button").filter({ hasText: /^$/ }).click();
     await page.getByRole("button", { name: "Save" }).click();
