@@ -5,8 +5,8 @@ test.describe("Workspace", () => {
   const generateEmail = "joy+" + Date.now().toString() + "@gmail.com";
   const newGroup = { name: "New group", description: "This is new group" };
   const origin = {
-    name: "China",
-    description: "Personal workspace for joy",
+    name: "Automation",
+    description: "Automation test",
   };
   const settings = {
     name: "New Settings",
@@ -74,13 +74,12 @@ test.describe("Workspace", () => {
     await page.getByRole("button", { name: "Invite User" }).click();
     await page.getByPlaceholder("Enter email address").fill(generateEmail);
     await page.locator(".ant-select-selection-overflow").click();
-    await page.getByText("Beijing").click();
-    await page.getByText("Sichuan").click();
+    await page.getByText("Test 001").click();
     await page.locator(".ant-select-selection-overflow").click();
     await page.getByRole("button", { name: "Send Invitation" }).click();
     await page.getByRole("tab", { name: "Workspaces" }).click();
     await page
-      .getByRole("row", { name: "Beijing" })
+      .getByRole("row", { name: "Test 001" })
       .getByRole("button")
       .first()
       .click();
@@ -93,7 +92,7 @@ test.describe("Workspace", () => {
       .getByLabel("Close", { exact: true })
       .click();
     await page
-      .getByRole("row", { name: "Sichuan" })
+      .getByRole("row", { name: "Test 001" })
       .getByRole("button")
       .first()
       .click();
@@ -134,9 +133,9 @@ test.describe("Workspace", () => {
     //
     await page
       .getByPlaceholder("Search by name or email")
-      .fill("joy+05@57blocks.com");
+      .fill("joy+042@57blocks.com");
     await Page.assertElementExist(
-      page.getByRole("cell", { name: "joy+05@57blocks.com" })
+      page.getByRole("cell", { name: "joy+042@57blocks.com" })
     );
 
     const result = await page.locator("tbody tr").all();
@@ -151,7 +150,7 @@ test.describe("Workspace", () => {
     await page.getByLabel("Users").getByText("All Status").click();
     await page.getByText("Accepted", { exact: true }).click();
     await Page.assertElementsExist([
-      page.getByRole("cell", { name: "ACCEPTED" }),
+      page.getByRole("cell", { name: "ACCEPTED" }).first(),
       page.getByRole("cell", { name: "Owner", exact: true }),
     ]);
     await Page.assertElementIsNotExist(
@@ -224,20 +223,20 @@ test.describe("Workspace", () => {
     const Page = new Pages(page);
     await page.getByRole("tab", { name: "Workspaces" }).click();
     await page
-      .getByRole("row", { name: "Shanghai test" })
+      .getByRole("row", { name: "test 001" })
       .getByRole("button")
       .first()
       .click();
     await page.locator("#seatId").click();
-    await page.getByText("joy+05@57blocks.com").click();
+    await page.getByText("joy+03@57blocks.com").click();
     await page.waitForTimeout(3000);
     await page.getByRole("button", { name: "Add Members" }).click();
     await Page.assertElementsExist([
       page.getByText("1 member added to workspace successfully"),
-      page.getByRole("row", { name: "joy+05@57blocks.com" }),
+      page.getByRole("row", { name: "joy+03@57blocks.com" }),
     ]);
     await page
-      .getByRole("row", { name: "joy+05@57blocks.com Member" })
+      .getByRole("row", { name: "joy+03@57blocks.com Member" })
       .getByRole("button")
       .click();
     await page.getByRole("button", { name: "Yes" }).click();
@@ -245,7 +244,7 @@ test.describe("Workspace", () => {
       page.getByText("Member removed from workspace successfully")
     );
     await Page.assertElementIsNotExist(
-      page.getByRole("row", { name: "joy+05@57blocks.com" })
+      page.getByRole("row", { name: "joy+03@57blocks.com" })
     );
   });
 
@@ -270,7 +269,7 @@ test.describe("Workspace", () => {
 
   test("Purchase more seats", async ({ page }) => {
     const Page = new Pages(page);
-    await page.getByRole("link", { name: "Purchase more seats" }).click();
+    await page.getByRole("button", { name: "Purchase more seats" }).click();
     const initialValue = await page
       .locator("input.ant-input-number-input")
       .getAttribute("value");
@@ -289,7 +288,7 @@ test.describe("Workspace", () => {
 
   test("Manage subscription", async ({ page }) => {
     const Page = new Pages(page);
-    await page.getByRole("link", { name: "Purchase more seats" }).click();
+    await page.getByRole("button", { name: "Purchase more seats" }).click();
     await page.getByRole("button", { name: "Manage Subscription" }).click();
     await Page.assertElementsExist([
       page.getByText("Subscription History"),
