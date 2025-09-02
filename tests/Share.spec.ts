@@ -8,7 +8,7 @@ test.describe("Share ", () => {
 
   test("Change Share Policy to public", async ({ page }) => {
     const Page = new Pages(page);
-    await page.locator('span[data-sentry-element="Avatar"]').click();
+    await Page.avatar.click();
     await page.getByRole("menuitem", { name: "Manage Organization" }).click();
     await page.getByRole("tab", { name: "Settings" }).click();
     await page.locator('div[data-sentry-element="Select"]').click();
@@ -18,7 +18,7 @@ test.describe("Share ", () => {
 
   test("Change Share Policy to Inner", async ({ page }) => {
     const Page = new Pages(page);
-    await page.locator('span[data-sentry-element="Avatar"]').click();
+    await Page.avatar.click();
     await page.getByRole("menuitem", { name: "Manage Organization" }).click();
     await page.getByRole("tab", { name: "Settings" }).click();
     await page.locator('div[data-sentry-element="Select"]').click();
@@ -28,7 +28,7 @@ test.describe("Share ", () => {
 
   test("Change Share Policy to approval", async ({ page }) => {
     const Page = new Pages(page);
-    await page.locator('span[data-sentry-element="Avatar"]').click();
+    await Page.avatar.click();
     await page.getByRole("menuitem", { name: "Manage Organization" }).click();
     await page.getByRole("tab", { name: "Settings" }).click();
     await page.locator('div[data-sentry-element="Select"]').click();

@@ -21,24 +21,22 @@ test.describe("Workspace", () => {
   test("Workspace homepage", async ({ page }) => {
     const Page = new Pages(page);
     await Page.assertElementsExist([
-      page.getByText("Seat Usage"),
-      page.getByRole("heading", { name: "Admin Panel" }),
-      page
-        .locator('div[data-sentry-element="Card"]')
-        .getByText("Quick Actions"),
-      page.getByRole("tab", { name: "Overview" }),
-      page.getByRole("tab", { name: "Users" }),
-      page.getByRole("tab", { name: "Workspaces" }),
-      page.getByRole("tab", { name: "Settings" }),
+      Page.workspace.adminPanel,
+      Page.workspace.seatUsage,
+      Page.workspace.quickActions,
+      Page.workspace.overview,
+      Page.workspace.users,
+      Page.workspace.workspaces,
+      Page.workspace.settings,
     ]);
   });
 
   test("Quick actions", async ({ page }) => {
     const Page = new Pages(page);
-    await page.getByRole("button", { name: "Invite New Users" }).click();
+    await Page.workspace.inviteNewUsers.click();
     await Page.assertElementExist(page.getByText("Invite UserEmailCancelSend"));
-    await page.getByRole("button", { name: "Cancel" }).click();
-    await page.getByRole("button", { name: "Settings" }).click();
+    await Page.workspace.cancelButton.click();
+    await Page.workspace.settingsButton.click();
     await Page.assertElementExist(
       page.getByText("Organization NameOrganization")
     );
@@ -46,10 +44,10 @@ test.describe("Workspace", () => {
 
   test("Invite user/ Delete user", async ({ page }) => {
     const Page = new Pages(page);
-    await page.getByRole("tab", { name: "Users" }).click();
-    await page.getByRole("button", { name: "Invite User" }).click();
+    await Page.workspace.users.click();
+    await Page.workspace.inviteUserButton.click();
     await page.getByPlaceholder("Enter email address").fill(generateEmail);
-    await page.getByRole("button", { name: "Send Invitation" }).click();
+    await Page.workspace.sendInvitationButton.click();
     await Page.assertElementExist(
       page
         .locator("tr")
@@ -62,7 +60,7 @@ test.describe("Workspace", () => {
       .getByRole("button", { name: "Delete" })
       .first()
       .click();
-    await page.getByRole("button", { name: "OK" }).click();
+    await Page.workspace.confirmButton.click();
     await Page.assertElementIsNotExist(
       page.locator("tr").filter({ hasText: generateEmail })
     );
@@ -70,14 +68,14 @@ test.describe("Workspace", () => {
 
   test("Invite user and send it to workspace", async ({ page }) => {
     const Page = new Pages(page);
-    await page.getByRole("tab", { name: "Users" }).click();
-    await page.getByRole("button", { name: "Invite User" }).click();
+    await Page.workspace.users.click();
+    await Page.workspace.inviteUserButton.click();
     await page.getByPlaceholder("Enter email address").fill(generateEmail);
     await page.locator(".ant-select-selection-overflow").click();
     await page.getByText("Test 001").click();
     await page.locator(".ant-select-selection-overflow").click();
-    await page.getByRole("button", { name: "Send Invitation" }).click();
-    await page.getByRole("tab", { name: "Workspaces" }).click();
+    await Page.workspace.sendInvitationButton.click();
+    await Page.workspace.workspaces.click();
     await page
       .getByRole("row", { name: "Test 001" })
       .getByRole("button")
@@ -106,18 +104,18 @@ test.describe("Workspace", () => {
       .click();
 
     // delete user to clean data
-    await page.getByRole("tab", { name: "Users" }).click();
+    await Page.workspace.users.click();
     await page
       .getByRole("row", { name: generateEmail })
       .getByRole("button")
       .nth(1)
       .click();
-    await page.getByRole("button", { name: "OK" }).click();
+    await Page.workspace.confirmButton.click();
   });
 
   test("Search user", async ({ page }) => {
     const Page = new Pages(page);
-    await page.getByRole("tab", { name: "Users" }).click();
+    await Page.workspace.users.click();
     await page
       .getByRole("textbox", { name: "Search by name or email" })
       .click();
@@ -144,7 +142,7 @@ test.describe("Workspace", () => {
 
   test("Filter user", async ({ page }) => {
     const Page = new Pages(page);
-    await page.getByRole("tab", { name: "Users" }).click();
+    await Page.workspace.users.click();
 
     // Accepted user
     await page.getByLabel("Users").getByText("All Status").click();
@@ -175,8 +173,8 @@ test.describe("Workspace", () => {
 
   test("Create workspace/Edit/ Delete workspace", async ({ page }) => {
     const Page = new Pages(page);
-    await page.getByRole("tab", { name: "Workspaces" }).click();
-    await page.getByRole("button", { name: "Create Workspace" }).click();
+    await Page.workspace.workspaces.click();
+    await Page.workspace.createWorkspaceButton.click();
     await page.getByPlaceholder("Enter workspace name").fill(newGroup.name);
     await page
       .getByPlaceholder("Enter workspace description")
@@ -223,7 +221,7 @@ test.describe("Workspace", () => {
 
   test("Invite user/Delete user in workspace", async ({ page }) => {
     const Page = new Pages(page);
-    await page.getByRole("tab", { name: "Workspaces" }).click();
+    await Page.workspace.workspaces.click();
     await page
       .getByRole("row", { name: "test 001" })
       .getByRole("button")
@@ -232,7 +230,7 @@ test.describe("Workspace", () => {
     await page.locator("#seatId").click();
     await page.getByText("joy+03@57blocks.com").click();
     await page.waitForTimeout(3000);
-    await page.getByRole("button", { name: "Add Members" }).click();
+    await Page.workspace.addMembersButton.click();
     await Page.assertElementsExist([
       page.getByText("1 member added to workspace successfully"),
       page.getByRole("row", { name: "joy+03@57blocks.com" }),
@@ -241,7 +239,7 @@ test.describe("Workspace", () => {
       .getByRole("row", { name: "joy+03@57blocks.com Member" })
       .getByRole("button")
       .click();
-    await page.getByRole("button", { name: "Yes" }).click();
+    await Page.workspace.yesButton.click();
     await Page.assertElementExist(
       page.getByText("Member removed from workspace successfully")
     );
@@ -252,12 +250,12 @@ test.describe("Workspace", () => {
 
   test("Settings", async ({ page }) => {
     const Page = new Pages(page);
-    await page.getByRole("tab", { name: "Settings" }).click();
+    await Page.workspace.settings.click();
     await page.getByPlaceholder("Enter organization name").fill(settings.name);
     await page
       .getByPlaceholder("Enter organization description (optional)")
       .fill(settings.description);
-    await page.getByRole("button", { name: "Save Changes" }).click();
+    await Page.workspace.saveChangesButton.click();
     await Page.assertElementExist(
       page.getByText(settings.name, { exact: true })
     );
@@ -266,12 +264,12 @@ test.describe("Workspace", () => {
     await page
       .getByPlaceholder("Enter organization description (optional)")
       .fill(origin.description);
-    await page.getByRole("button", { name: "Save Changes" }).click();
+    await Page.workspace.saveChangesButton.click();
   });
 
   test("Purchase more seats", async ({ page }) => {
     const Page = new Pages(page);
-    await page.getByRole("button", { name: "Purchase more seats" }).click();
+    await Page.workspace.purchaseMoreSeatsButton.click();
     const initialValue = await page
       .locator("input.ant-input-number-input")
       .getAttribute("value");
@@ -283,15 +281,15 @@ test.describe("Workspace", () => {
       Number(initialValue) + 1,
       Number(valueAdjusted)
     );
-    await page.getByRole("button", { name: "Add Seats" }).click();
-    await page.getByRole("button", { name: "Pay Now" }).click();
+    await Page.workspace.addSeatsButton.click();
+    await Page.workspace.payNowButton.click();
     await Page.assertElementExist(page.getByText("Backdev sandboxSandbox"));
   });
 
   test("Manage subscription", async ({ page }) => {
     const Page = new Pages(page);
-    await page.getByRole("button", { name: "Purchase more seats" }).click();
-    await page.getByRole("button", { name: "Manage Subscription" }).click();
+    await Page.workspace.purchaseMoreSeatsButton.click();
+    await Page.workspace.manageSubscriptionButton.click();
     await Page.assertElementsExist([
       page.getByText("Subscription History"),
       page.getByRole("cell", { name: "Cancel" }),
@@ -301,7 +299,7 @@ test.describe("Workspace", () => {
 
   test("Subscription history", async ({ page }) => {
     const Page = new Pages(page);
-    await page.getByRole("tab", { name: "Subscription History" }).click();
+    await Page.workspace.subscriptionHistory.click();
     await Page.assertElementsExist([
       page.getByRole("cell", { name: "Cancel" }),
       page.getByText("Active", { exact: true }),
@@ -310,14 +308,14 @@ test.describe("Workspace", () => {
 
   test("Cancel/Reactivate subscription ", async ({ page }) => {
     const Page = new Pages(page);
-    await page.getByRole("tab", { name: "Subscription History" }).click();
+    await Page.workspace.subscriptionHistory.click();
     await page.locator("td button").filter({ hasText: "Cancel" }).click();
     await page.getByRole("button", { name: "Keep Subscription" }).click();
     await Page.assertElementExist(
       page.locator("td").filter({ hasText: "Active" })
     );
     await page.locator("td button").filter({ hasText: "Cancel" }).click();
-    await page.getByRole("button", { name: "Cancel Subscription" }).click();
+    await Page.workspace.cancelSubscriptionButton.click();
     await page.waitForTimeout(25000);
     await page.reload();
     await Page.assertElementExist(
@@ -328,7 +326,7 @@ test.describe("Workspace", () => {
     await Page.assertElementExist(
       page.locator("td").filter({ hasText: "Canceled" })
     );
-    await page.getByRole("button", { name: "Reactivate Subscription" }).click();
+    await Page.workspace.reactivateSubscriptionButton.click();
     await Page.assertElementExist(page.getByText("Subscription reactivated"));
     await page.waitForTimeout(30000);
     await page.reload();

@@ -1,15 +1,20 @@
 import { expect, Locator, Page } from "@playwright/test";
 import { AttachFiles } from "./AttachFiles";
 import { Library } from "./Library";
+import { Workspace } from "./Workspace";
 
 export default class Pages {
   page: Page;
   attachFiles: AttachFiles;
   library: Library;
+  workspace: Workspace;
+  avatar: Locator;
   constructor(page: Page) {
     this.page = page;
     this.attachFiles = new AttachFiles(page);
     this.library = new Library(page);
+    this.workspace = new Workspace(page);
+    this.avatar = page.locator('span[data-sentry-element="Avatar"]');
   }
 
   async homepage() {
