@@ -164,7 +164,9 @@ test.describe("Workspace", () => {
       .filter({ hasText: /^Accepted$/ })
       .click();
     await page.getByText("Pending", { exact: true }).click();
-    await Page.assertElementExist(page.getByRole("cell", { name: "PENDING" }));
+    await Page.assertElementExist(
+      page.getByRole("cell", { name: "PENDING" }).first()
+    );
     await Page.assertElementsAreNotExist([
       page.getByRole("cell", { name: "ACCEPTED" }),
       page.getByRole("cell", { name: "Owner", exact: true }),

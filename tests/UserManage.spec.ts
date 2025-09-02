@@ -58,7 +58,7 @@ test.describe("User manage", () => {
     const seats = getRandomNumberString();
     await page.getByRole("menuitem", { name: "Organization" }).click();
     await page
-      .getByRole("row", { name: "Automation" })
+      .getByRole("row", { name: "Joy test	" })
       .getByRole("img")
       .nth(2)
       .click();
@@ -66,7 +66,7 @@ test.describe("User manage", () => {
     await page.keyboard.press("Enter");
     await Page.assertElementExist(
       page
-        .getByRole("row", { name: "Automation" })
+        .getByRole("row", { name: "Joy test	" })
         .locator("td:nth-child(5)")
         .filter({ hasText: seats })
     );
