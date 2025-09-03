@@ -27,6 +27,9 @@ export class Workspace {
   reactivateSubscriptionButton: Locator;
   yesButton: Locator;
   deleteWorkspaceButton: Locator;
+  subscriptionHistoryText: Locator;
+  cancelCell: Locator;
+  activeStatus: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -78,6 +81,10 @@ export class Workspace {
     this.deleteWorkspaceButton = page.getByRole("button", {
       name: "Yes, Delete",
     });
+
+    this.subscriptionHistoryText = page.getByText("Subscription History");
+    this.cancelCell = page.getByRole("cell", { name: "Cancel" });
+    this.activeStatus = page.getByText("Active", { exact: true });
   }
 
   async manageOrganization() {
@@ -130,5 +137,11 @@ export class Workspace {
     await this.page
       .getByPlaceholder("Enter organization description (optional)")
       .fill(description);
+  }
+
+  async getPurchasedValue() {
+    return await this.page
+      .locator("input.ant-input-number-input")
+      .getAttribute("value");
   }
 }
