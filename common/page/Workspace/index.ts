@@ -26,6 +26,7 @@ export class Workspace {
   cancelSubscriptionButton: Locator;
   reactivateSubscriptionButton: Locator;
   yesButton: Locator;
+  deleteWorkspaceButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -74,5 +75,60 @@ export class Workspace {
       name: "Reactivate Subscription",
     });
     this.yesButton = page.getByRole("button", { name: "Yes" });
+    this.deleteWorkspaceButton = page.getByRole("button", {
+      name: "Yes, Delete",
+    });
+  }
+
+  async manageOrganization() {
+    await this.page.goto("/");
+    await this.page.locator('span[data-sentry-element="Avatar"]').click();
+    await this.page
+      .getByRole("menuitem", { name: "Manage Organization" })
+      .click();
+  }
+
+  async inputEmail(email: string) {
+    await this.page.getByPlaceholder("Enter email address").fill(email);
+  }
+
+  async searchByNameOrEmail(text: string) {
+    await this.page
+      .getByRole("textbox", { name: "Search by name or email" })
+      .click();
+    await this.page.getByPlaceholder("Search by name or email").fill(text);
+  }
+
+  async inputWorkspaceName(name: string) {
+    await this.page.getByPlaceholder("Enter workspace name").clear();
+    await this.page.getByPlaceholder("Enter workspace name").fill(name);
+  }
+
+  async inputWorkspaceDescription(description: string) {
+    await this.page.getByPlaceholder("Enter workspace description").clear();
+    await this.page
+      .getByPlaceholder("Enter workspace description")
+      .fill(description);
+  }
+
+  async createWorkspace() {
+    await this.page
+      .getByLabel("Create workspace")
+      .getByRole("button", { name: "Create Workspace" })
+      .click();
+  }
+
+  async updateWorkspace() {
+    await this.page.getByRole("button", { name: "Update workspace" }).click();
+  }
+
+  async inputOrganizationName(name: string) {
+    await this.page.getByPlaceholder("Enter organization name").fill(name);
+  }
+
+  async inputOrganizationDescription(description: string) {
+    await this.page
+      .getByPlaceholder("Enter organization description (optional)")
+      .fill(description);
   }
 }

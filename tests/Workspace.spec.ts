@@ -13,9 +13,8 @@ test.describe("Workspace", () => {
     description: "This is new settings",
   };
   test.beforeEach(async ({ page }) => {
-    await page.goto("/");
-    await page.locator('span[data-sentry-element="Avatar"]').click();
-    await page.getByRole("menuitem", { name: "Manage Organization" }).click();
+    const Page = new Pages(page);
+    await Page.workspace.manageOrganization();
   });
 
   test("Workspace homepage", async ({ page }) => {
@@ -46,7 +45,7 @@ test.describe("Workspace", () => {
     const Page = new Pages(page);
     await Page.workspace.users.click();
     await Page.workspace.inviteUserButton.click();
-    await page.getByPlaceholder("Enter email address").fill(generateEmail);
+    await Page.workspace.inputEmail(generateEmail);
     await Page.workspace.sendInvitationButton.click();
     await Page.assertElementExist(
       page
@@ -68,16 +67,17 @@ test.describe("Workspace", () => {
 
   test("Invite user and send it to workspace", async ({ page }) => {
     const Page = new Pages(page);
+    const workspaceName = "Test 001";
     await Page.workspace.users.click();
     await Page.workspace.inviteUserButton.click();
-    await page.getByPlaceholder("Enter email address").fill(generateEmail);
+    await Page.workspace.inputEmail(generateEmail);
     await page.locator(".ant-select-selection-overflow").click();
-    await page.getByText("Test 001").click();
+    await page.getByText(workspaceName).click();
     await page.locator(".ant-select-selection-overflow").click();
     await Page.workspace.sendInvitationButton.click();
     await Page.workspace.workspaces.click();
     await page
-      .getByRole("row", { name: "Test 001" })
+      .getByRole("row", { name: workspaceName })
       .getByRole("button")
       .first()
       .click();
@@ -90,7 +90,7 @@ test.describe("Workspace", () => {
       .getByLabel("Close", { exact: true })
       .click();
     await page
-      .getByRole("row", { name: "Test 001" })
+      .getByRole("row", { name: workspaceName })
       .getByRole("button")
       .first()
       .click();
@@ -115,26 +115,20 @@ test.describe("Workspace", () => {
 
   test("Search user", async ({ page }) => {
     const Page = new Pages(page);
+    const invalidUser = "test@57blocks.com";
+    const validUser = "joy+042@57blocks.com";
     await Page.workspace.users.click();
-    await page
-      .getByRole("textbox", { name: "Search by name or email" })
-      .click();
 
     // invalid user
-    await page
-      .getByPlaceholder("Search by name or email")
-      .fill("test@57blocks.com");
+
+    await Page.workspace.searchByNameOrEmail(invalidUser);
     await Page.assertElementIsNotExist(
-      page.getByRole("cell", { name: "test@57blocks.com" })
+      page.getByRole("cell", { name: invalidUser })
     );
 
-    //
-    await page
-      .getByPlaceholder("Search by name or email")
-      .fill("joy+042@57blocks.com");
-    await Page.assertElementExist(
-      page.getByRole("cell", { name: "joy+042@57blocks.com" })
-    );
+    // valid user
+    await Page.workspace.searchByNameOrEmail(validUser);
+    await Page.assertElementExist(page.getByRole("cell", { name: validUser }));
 
     const result = await page.locator("tbody tr").all();
     await Page.assertElementEqualTo(result.length, 1);
@@ -173,17 +167,16 @@ test.describe("Workspace", () => {
 
   test("Create workspace/Edit/ Delete workspace", async ({ page }) => {
     const Page = new Pages(page);
+    const editOne = {
+      name: "edit",
+      description: "edit description",
+    };
     await Page.workspace.workspaces.click();
     await Page.workspace.createWorkspaceButton.click();
-    await page.getByPlaceholder("Enter workspace name").fill(newGroup.name);
-    await page
-      .getByPlaceholder("Enter workspace description")
-      .fill(newGroup.description);
+    await Page.workspace.inputWorkspaceName(newGroup.name);
+    await Page.workspace.inputWorkspaceDescription(newGroup.description);
     await page.waitForTimeout(3000);
-    await page
-      .getByLabel("Create workspace")
-      .getByRole("button", { name: "Create Workspace" })
-      .click();
+    await Page.workspace.createWorkspace();
     await Page.assertElementExist(
       page
         .locator("tr")
@@ -197,20 +190,16 @@ test.describe("Workspace", () => {
       .getByRole("button")
       .nth(1)
       .click();
-    await page.getByPlaceholder("Enter workspace name").clear();
-    await page.getByPlaceholder("Enter workspace name").fill("edit");
-    await page.getByPlaceholder("Enter workspace description").clear();
-    await page
-      .getByPlaceholder("Enter workspace description")
-      .fill("edit description");
-    await page.getByRole("button", { name: "Update workspace" }).click();
+    await Page.workspace.inputWorkspaceName(editOne.name);
+    await Page.workspace.inputWorkspaceDescription(editOne.description);
+    await Page.workspace.updateWorkspace();
     await page
       .locator("tr")
       .filter({ hasText: "edit" })
       .getByRole("button")
       .last()
       .click();
-    await page.getByRole("button", { name: "Yes, Delete" }).click();
+    await Page.workspace.deleteWorkspaceButton.click();
     await Page.assertElementIsNotExist(
       page
         .locator("tr")
@@ -251,19 +240,15 @@ test.describe("Workspace", () => {
   test("Settings", async ({ page }) => {
     const Page = new Pages(page);
     await Page.workspace.settings.click();
-    await page.getByPlaceholder("Enter organization name").fill(settings.name);
-    await page
-      .getByPlaceholder("Enter organization description (optional)")
-      .fill(settings.description);
+    await Page.workspace.inputOrganizationName(settings.name);
+    await Page.workspace.inputOrganizationDescription(settings.description);
     await Page.workspace.saveChangesButton.click();
     await Page.assertElementExist(
       page.getByText(settings.name, { exact: true })
     );
     await page.waitForTimeout(3000);
-    await page.getByPlaceholder("Enter organization name").fill(origin.name);
-    await page
-      .getByPlaceholder("Enter organization description (optional)")
-      .fill(origin.description);
+    await Page.workspace.inputOrganizationName(origin.name);
+    await Page.workspace.inputOrganizationDescription(origin.description);
     await Page.workspace.saveChangesButton.click();
   });
 
