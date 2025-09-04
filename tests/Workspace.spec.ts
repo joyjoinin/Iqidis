@@ -15,6 +15,7 @@ test.describe("Workspace", () => {
 
   test.beforeEach(async ({ page }) => {
     const Page = new Pages(page);
+    await page.goto("/");
     await Page.workspace.manageOrganization();
   });
 

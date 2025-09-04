@@ -22,6 +22,7 @@ export class Library {
   sharedButton: Locator;
   closeButton: Locator;
   documentsTap: Locator;
+  closeByRoleButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -58,6 +59,7 @@ export class Library {
     this.shareButton = page.getByRole("menuitem", { name: "Share File" });
     this.sharedButton = page.getByText("Shared", { exact: true });
     this.closeButton = page.locator("button").filter({ hasText: "Close" });
+    this.closeByRoleButton = page.getByRole("button", { name: "Close" });
     this.documentsTap = page.getByText("All Documents").first();
   }
 

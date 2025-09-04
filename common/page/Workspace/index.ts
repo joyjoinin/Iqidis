@@ -30,6 +30,8 @@ export class Workspace {
   subscriptionHistoryText: Locator;
   cancelCell: Locator;
   activeStatus: Locator;
+  settingsTab: Locator;
+  policy: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -85,10 +87,11 @@ export class Workspace {
     this.subscriptionHistoryText = page.getByText("Subscription History");
     this.cancelCell = page.getByRole("cell", { name: "Cancel" });
     this.activeStatus = page.getByText("Active", { exact: true });
+    this.settingsTab = page.getByRole("tab", { name: "Settings" });
+    this.policy = page.locator('div[data-sentry-element="Select"]');
   }
 
   async manageOrganization() {
-    await this.page.goto("/");
     await this.page.locator('span[data-sentry-element="Avatar"]').click();
     await this.page
       .getByRole("menuitem", { name: "Manage Organization" })
@@ -143,5 +146,9 @@ export class Workspace {
     return await this.page
       .locator("input.ant-input-number-input")
       .getAttribute("value");
+  }
+
+  async selectPolicy(policy: string) {
+    await this.page.getByText(policy, { exact: true }).last().click();
   }
 }
