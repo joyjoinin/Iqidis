@@ -43,34 +43,29 @@ test.describe("Attach files functions", () => {
 
   test("Filter documents", async ({ page }) => {
     const Page = new Pages(page);
+    const DocxCell = page.getByRole("cell", { name: "DOCX", exact: true });
+    const TxtCell = page.getByRole("cell", { name: "TXT", exact: true });
+    const PdfCell = page.getByRole("cell", { name: "PDF", exact: true });
+
     await Page.attachFiles.clickAttachFilesIcon();
     await Page.attachFiles.clickLibraryFiles();
     await Page.attachFiles.clickAllDocuments();
     await Page.page.waitForTimeout(3000);
     await Page.attachFiles.clickFilter();
     await Page.attachFiles.selectPDF();
-    await Page.assertElementsAreNotExist([
-      page.getByRole("cell", { name: "DOCX", exact: true }),
-      page.getByRole("cell", { name: "TXT", exact: true }),
-    ]);
+    await Page.assertElementsAreNotExist([DocxCell, TxtCell]);
 
     await Page.attachFiles.clickFilter();
     await Page.attachFiles.selectPDF();
     await Page.attachFiles.clickFilter();
     await Page.attachFiles.selectDoc();
-    await Page.assertElementsAreNotExist([
-      page.getByRole("cell", { name: "PDF", exact: true }),
-      page.getByRole("cell", { name: "TXT", exact: true }),
-    ]);
+    await Page.assertElementsAreNotExist([PdfCell, TxtCell]);
 
     await Page.attachFiles.clickFilter();
     await Page.attachFiles.selectDoc();
     await Page.attachFiles.clickFilter();
     await Page.attachFiles.selectTxt();
-    await Page.assertElementsAreNotExist([
-      page.getByRole("cell", { name: "DOCX", exact: true }),
-      page.getByRole("cell", { name: "PDF", exact: true }),
-    ]);
+    await Page.assertElementsAreNotExist([DocxCell, PdfCell]);
   });
 
   test("Recent documents", async ({ page }) => {
@@ -84,9 +79,7 @@ test.describe("Attach files functions", () => {
       .getByRole("button", { name: "Attach", exact: true })
       .first()
       .click();
-    await Page.assertElementExist(
-      page.getByRole("button", { name: "Click to preview" }).getByRole("button")
-    );
+    await Page.assertElementExist(Page.previewButton);
   });
 
   test("Favorite documents", async ({ page }) => {
@@ -138,23 +131,18 @@ test.describe("Attach files functions", () => {
     // await Page.assertElementExist(
     //   page.getByText("1 files uploaded successfully")
     // );
-    await Page.assertElementExist(
-      Page.page
-        .getByRole("button", { name: "Click to preview" })
-        .getByRole("button")
-    );
+    await Page.assertElementExist(Page.previewButton);
   });
 
   test("Search from Recent", async ({ page }) => {
     const Page = new Pages(page);
+    const document = "searchFromRecent.txt";
     await Page.attachFiles.clickAttachFilesIcon();
     await Page.attachFiles.clickRecentFiles();
-    await page
-      .getByPlaceholder("Search documents...")
-      .fill("searchFromRecent.txt");
+    await page.getByPlaceholder("Search documents...").fill(document);
     await page.keyboard.press("Enter");
     await page.waitForTimeout(10000);
-    await Page.assertElementExist(page.getByText("searchFromRecent.txt"));
+    await Page.assertElementExist(page.getByText(document));
   });
 
   test("Upload new from Upload New Files", async ({ page }) => {
@@ -169,19 +157,16 @@ test.describe("Attach files functions", () => {
     //   page.getByText("1 files uploaded successfully")
     // );
     await page.waitForTimeout(20000);
-    await Page.assertElementExist(
-      Page.page
-        .getByRole("button", { name: "Click to preview" })
-        .getByRole("button")
-    );
+    await Page.assertElementExist(Page.previewButton);
   });
 
   test("Do not add document to library", async ({ page }) => {
     const Page = new Pages(page);
+    const document = "NoAddToLibrary.pdf";
+    const fileRoot = "common/testFiles/NoAddToLibrary.pdf";
     await Page.attachFiles.clickAttachFilesIcon();
     await Page.attachFiles.doNotAddDocumentToLibrary();
-    await Page.attachFiles.inputFile("common/testFiles/NoAddToLibrary.pdf");
-
+    await Page.attachFiles.inputFile(fileRoot);
     await Page.assertElementExist(Page.attachFiles.waitingButton);
     await Page.attachFiles.upload();
     // await Page.assertElementExist(
@@ -193,10 +178,7 @@ test.describe("Attach files functions", () => {
     await Page.attachFiles.clickLibraryFiles();
     await Page.attachFiles.clickAllDocuments();
     await Page.assertElementIsNotExist(
-      page
-        .getByRole("row", { name: "NoAddToLibrary.pdf" })
-        .getByRole("cell")
-        .nth(0)
+      page.getByRole("row", { name: document }).getByRole("cell").nth(0)
     );
   });
 });

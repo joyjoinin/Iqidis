@@ -9,12 +9,16 @@ export default class Pages {
   library: Library;
   workspace: Workspace;
   avatar: Locator;
+  previewButton: Locator;
   constructor(page: Page) {
     this.page = page;
     this.attachFiles = new AttachFiles(page);
     this.library = new Library(page);
     this.workspace = new Workspace(page);
     this.avatar = page.locator('span[data-sentry-element="Avatar"]');
+    this.previewButton = page
+      .getByRole("button", { name: "Click to preview" })
+      .getByRole("button");
   }
 
   async homepage() {
