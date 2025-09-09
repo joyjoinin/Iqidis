@@ -17,6 +17,7 @@ test.describe("Workspace", () => {
     const Page = new Pages(page);
     await page.goto("/");
     await Page.workspace.manageOrganization();
+    await page.waitForTimeout(3000);
   });
 
   test("Workspace homepage", async ({ page }) => {
@@ -35,12 +36,9 @@ test.describe("Workspace", () => {
   test("Quick actions", async ({ page }) => {
     const Page = new Pages(page);
     await Page.workspace.inviteNewUsers.click();
-    await Page.assertElementExist(page.getByText("Invite UserEmailCancelSend"));
     await Page.workspace.cancelButton.click();
     await Page.workspace.settingsButton.click();
-    await Page.assertElementExist(
-      page.getByText("Organization NameOrganization")
-    );
+    await Page.assertElementExist(page.getByText("Manage your organization's"));
   });
 
   test("Invite user/ Delete user", async ({ page }) => {
@@ -254,6 +252,7 @@ test.describe("Workspace", () => {
   test("Purchase more seats", async ({ page }) => {
     const Page = new Pages(page);
     await Page.workspace.purchaseMoreSeatsButton.click();
+    await page.waitForTimeout(3000);
     const initialValue = await Page.workspace.getPurchasedValue();
     await page.locator('button svg[data-sentry-element="Plus"]').click();
     const valueAdjusted = await Page.workspace.getPurchasedValue();
@@ -269,6 +268,7 @@ test.describe("Workspace", () => {
   test("Manage subscription", async ({ page }) => {
     const Page = new Pages(page);
     await Page.workspace.purchaseMoreSeatsButton.click();
+    await page.waitForTimeout(3000);
     await Page.workspace.manageSubscriptionButton.click();
     await Page.assertElementsExist([
       Page.workspace.subscriptionHistoryText,

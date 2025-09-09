@@ -48,7 +48,9 @@ export class Workspace {
       name: "Invite New Users",
     });
     this.cancelButton = page.getByRole("button", { name: "Cancel" });
-    this.settingsButton = page.getByRole("button", { name: "Settings" });
+    this.settingsButton = page.getByRole("button", {
+      name: "Organization Settings",
+    });
     this.inviteUserButton = page.getByRole("button", { name: "Invite User" });
     this.sendInvitationButton = page.getByRole("button", {
       name: "Send Invitation",
@@ -62,7 +64,7 @@ export class Workspace {
       name: "Save Changes",
     });
     this.purchaseMoreSeatsButton = page.getByRole("button", {
-      name: "Purchase more seats",
+      name: "Add Seats",
     });
 
     this.addSeatsButton = page.getByRole("button", { name: "Add Seats" });
@@ -71,7 +73,7 @@ export class Workspace {
       name: "Manage Subscription",
     });
     this.subscriptionHistory = page.getByRole("tab", {
-      name: "Subscription History",
+      name: "Billing History",
     });
     this.cancelSubscriptionButton = page.getByRole("button", {
       name: "Cancel Subscription",
@@ -84,7 +86,9 @@ export class Workspace {
       name: "Yes, Delete",
     });
 
-    this.subscriptionHistoryText = page.getByText("Subscription History");
+    this.subscriptionHistoryText = page.getByText(
+      "View your billing and payment"
+    );
     this.cancelCell = page.getByRole("cell", { name: "Cancel" });
     this.activeStatus = page.getByText("Active", { exact: true });
     this.settingsTab = page.getByRole("tab", { name: "Settings" });
@@ -92,9 +96,10 @@ export class Workspace {
   }
 
   async manageOrganization() {
-    await this.page.locator('span[data-sentry-element="Avatar"]').click();
+    // await this.page.locator('span[data-sentry-element="Avatar"]').click();
     await this.page
-      .getByRole("menuitem", { name: "Manage Organization" })
+      .locator('ul li[class="group/menu-item relative"]')
+      .last()
       .click();
   }
 

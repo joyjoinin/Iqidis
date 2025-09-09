@@ -48,9 +48,29 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
+    // {
+    //   name: "teardown",
+    //   testMatch: /.*\.teardown\.ts/,
+    //   use: {
+    //     ...devices["Desktop Chrome"],
+    //     viewport: { width: 1920, height: 1280 },
+    //     launchOptions: {
+    //       args: [
+    //         "--disable-web-security",
+    //         "--use-fake-ui-for-media-stream",
+    //         "--use-fake-device-for-media-stream",
+    //         "--no-sandbox",
+    //         "--start-maximized",
+    //       ],
+    //     },
+    //   },
+    // },
     {
+      name: "chrome",
+      // teardown: "teardown",
       use: {
         ...devices["Desktop Chrome"],
+
         // channel: "chrome",
         viewport: { width: 1720, height: 1080 },
         storageState: ".auth/template.json",
