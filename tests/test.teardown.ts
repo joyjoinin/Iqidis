@@ -12,7 +12,6 @@
 //   const CHANNEL = "C09E4G46D0C"; // 注意：这里应使用频道 ID，不是 #channel-name（或使用 user_id）
 //   const FILE_TITLE = "Test Report"; // 文件标题
 //   const INITIAL_COMMENT = "✅ 自动化测试已完成，详见附件"; // 评论
-//   const TOKEN = "xoxb-341158238759-9477368786966-5LRhSwoqdYy82SPk7Yu4OOVH"; // Bot Token
 
 //   // 检查文件是否存在
 //   if (!fs.existsSync(FILE_PATH)) {
