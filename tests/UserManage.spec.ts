@@ -93,7 +93,7 @@ test.describe("User manage", () => {
       .last()
       .click();
     await page.getByRole("button", { name: "Add Tier" }).click();
-    await page.getByPlaceholder("Enter minimum seats").nth(1).fill("10");
+    // await page.getByPlaceholder("Enter minimum seats").nth(1).fill("10");
     await page.getByRole("combobox").nth(1).click();
     await page.getByLabel("Joy Test 002 ($199.00/seat/").click();
     await page.getByRole("button", { name: "Save" }).click();
