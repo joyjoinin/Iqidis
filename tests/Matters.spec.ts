@@ -31,6 +31,36 @@ test.describe("Attach files functions", () => {
     ]);
   });
 
+  test("Edit matter", async ({ page }) => {
+    const Page = new Pages(page);
+    const matterEdited = {
+      name: "Edit name",
+      details: "Edit details",
+      instructions: "Edit instructions",
+    };
+    await Page.matters.manageMatters();
+    await page
+      .locator('div[data-sentry-component="MatterCard"] button')
+      .last()
+      .click();
+    await page.getByRole("menuitem", { name: "Edit Matter" }).click();
+    await page
+      .getByPlaceholder("e.g., Smith vs. Jones Contract Dispute")
+      .fill(matterEdited.name);
+    await page
+      .getByPlaceholder("Client or Project Name")
+      .fill(matterEdited.details);
+    await page
+      .getByPlaceholder(
+        "Your instructions will guide every chat you create within this matter. You can also turn instructions off/on in each matter chat."
+      )
+      .fill(matterEdited.instructions);
+    await page.getByRole("button", { name: "Update Matter" }).click();
+    await Page.assertElementExist(
+      page.getByText("Matter updated successfully")
+    );
+  });
+
   test("Matter's function", async ({ page }) => {
     const Page = new Pages(page);
     await Page.matters.manageMatters();
