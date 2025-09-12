@@ -2,6 +2,7 @@ import { expect, Locator, Page } from "@playwright/test";
 import { AttachFiles } from "./AttachFiles";
 import { Library } from "./Library";
 import { Workspace } from "./Workspace";
+import { Matters } from "./Matters";
 
 export default class Pages {
   page: Page;
@@ -10,11 +11,13 @@ export default class Pages {
   workspace: Workspace;
   avatar: Locator;
   previewButton: Locator;
+  matters: Matters;
   constructor(page: Page) {
     this.page = page;
     this.attachFiles = new AttachFiles(page);
     this.library = new Library(page);
     this.workspace = new Workspace(page);
+    this.matters = new Matters(page);
     this.avatar = page.locator('span[data-sentry-element="Avatar"]');
     this.previewButton = page
       .getByRole("button", { name: "Click to preview" })
