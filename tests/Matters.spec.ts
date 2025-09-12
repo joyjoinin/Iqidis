@@ -6,7 +6,7 @@ test.describe("Attach files functions", () => {
     await page.goto("/");
   });
 
-  test("Create matters", async ({ page }) => {
+  test("Create matter", async ({ page }) => {
     const Page = new Pages(page);
     const newMatter = {
       name: "auto test",
@@ -22,6 +22,21 @@ test.describe("Attach files functions", () => {
     await Page.assertElementsExist([
       page.getByText("Matter created successfully"),
       page.getByRole("heading", { name: newMatter.name }),
+    ]);
+  });
+
+  test("Delete matter", async ({ page }) => {
+    const Page = new Pages(page);
+    await Page.matters.manageMatters();
+    await page
+      .locator('div[data-sentry-component="MatterCard"] button')
+      .last()
+      .click();
+    await page.getByRole("menuitem", { name: "Delete Matter" }).click();
+    await page.getByRole("button", { name: "Delete" }).click();
+    await Page.assertElementsExist([
+      page.getByText("Matter deleted successfully"),
+      page.getByRole("heading", { name: "No matters yet" }),
     ]);
   });
 });
