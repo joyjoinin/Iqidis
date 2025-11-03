@@ -12,7 +12,7 @@ import { defineConfig, devices } from "@playwright/test";
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  testDir: "./tests",
+  testDir: "./tests_v2",
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -34,8 +34,7 @@ export default defineConfig({
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL:
       process.env.baseURL ||
-      "https://iqidisai-git-feat-multi-tenancy-iqidis.vercel.app",
-    // "https://iqidisai-git-feat-libraryv2-iqidis.vercel.app/library/v2",
+      "https://iqidisai-git-migrate-existing-users-to-multit-iqidis.vercel.app/",
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "retain-on-failure",
     video: { mode: "retain-on-failure", size: { width: 1720, height: 1080 } },
@@ -54,9 +53,8 @@ export default defineConfig({
         // channel: "chrome",
         viewport: { width: 1720, height: 1080 },
         storageState: ".auth/template.json",
-        // storageState: ".auth/V2.json",
-        headless: true,
-        // headless: false,
+        // headless: true,
+        headless: false,
         launchOptions: {
           args: [
             // "--disable-web-security",
