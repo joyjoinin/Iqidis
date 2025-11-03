@@ -1,6 +1,6 @@
 import { type Locator, type Page } from "@playwright/test";
 
-export class Workspace {
+export class Organization {
   page: Page;
   seatUsage: Locator;
   adminPanel: Locator;
@@ -95,11 +95,10 @@ export class Workspace {
     this.policy = page.locator('div[data-sentry-element="Select"]');
   }
 
-  async manageOrganization() {
-    // await this.page.locator('span[data-sentry-element="Avatar"]').click();
+  async organization() {
     await this.page
-      .locator('ul li[class="group/menu-item relative"]')
-      .last()
+      .locator('div[data-sidebar="footer"] > div > button')
+      .nth(0)
       .click();
   }
 

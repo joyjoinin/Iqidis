@@ -1,14 +1,14 @@
 import { expect, Locator, Page } from "@playwright/test";
 import { AttachFiles } from "./AttachFiles";
 import { Library } from "./Library";
-import { Workspace } from "./Workspace";
+import { Organization } from "./Organization";
 import { Matters } from "./Matters";
 
 export default class Pages {
   page: Page;
   attachFiles: AttachFiles;
   library: Library;
-  workspace: Workspace;
+  organization: Organization;
   avatar: Locator;
   previewButton: Locator;
   matters: Matters;
@@ -16,7 +16,7 @@ export default class Pages {
     this.page = page;
     this.attachFiles = new AttachFiles(page);
     this.library = new Library(page);
-    this.workspace = new Workspace(page);
+    this.organization = new Organization(page);
     this.matters = new Matters(page);
     this.avatar = page.locator('span[data-sentry-element="Avatar"]');
     this.previewButton = page
