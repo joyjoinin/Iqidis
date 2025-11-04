@@ -2,6 +2,13 @@ import { test } from "@playwright/test";
 import Pages from "../common/page";
 
 test.describe("Organization", () => {
+  function generateRandomString(length: number = 16): string {
+    const chars =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    return Array.from({ length })
+      .map(() => chars.charAt(Math.floor(Math.random() * chars.length)))
+      .join("");
+  }
   const generateEmail = "joy+" + Date.now().toString() + "@gmail.com";
   const newGroup = { name: "New group", description: "This is new group" };
   const origin = {
@@ -55,6 +62,32 @@ test.describe("Organization", () => {
       page.getByText("Billing Cycle", { exact: true }),
       page.getByText("Paid Date", { exact: true }),
       page.getByText("Actions", { exact: true }),
+    ]);
+  });
+
+  test("Organization setting", async ({ page }) => {
+    const Page = new Pages(page);
+    const organizationName = "Organization" + Date.now().toString();
+    const description = "description + " + generateRandomString();
+    await page
+      .locator(
+        'div[data-sentry-component="OrganizationDetail"] [data-sentry-element="DropdownMenuTrigger"]'
+      )
+      .hover();
+    await page.getByRole("menuitem", { name: "Edit" }).click();
+    await Page.assertElementsExist([
+      page.getByRole("heading", { name: "Organization Setting" }),
+      page.getByText("Manage your organization's"),
+      page.getByRole("button", { name: "Close" }),
+    ]);
+    await page
+      .getByPlaceholder("Enter organization name")
+      .fill(organizationName);
+    await page.getByPlaceholder("Enter organization detail").fill(description);
+    await page.getByRole("button", { name: "Save Changes" }).click();
+    await Page.assertElementsExist([
+      page.getByText("Organization information updated successfully"),
+      page.getByText(organizationName),
     ]);
   });
 });
