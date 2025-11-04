@@ -9,7 +9,6 @@ test.describe("Organization", () => {
       .map(() => chars.charAt(Math.floor(Math.random() * chars.length)))
       .join("");
   }
-  const generateEmail = "joy+" + Date.now().toString() + "@gmail.com";
   const newGroup = { name: "New group", description: "This is new group" };
   const origin = {
     name: "Automation",
@@ -89,5 +88,51 @@ test.describe("Organization", () => {
       page.getByText("Organization information updated successfully"),
       page.getByText(organizationName),
     ]);
+  });
+
+  test("Invite User", async ({ page }) => {
+    const Page = new Pages(page);
+    const email = "joy+" + Date.now().toString() + "@gmail.com";
+    await page.getByRole("tab", { name: "Overview" }).click();
+    await page.getByRole("button", { name: "Invite User" }).click();
+    await page.getByPlaceholder("Enter Email here").fill(email);
+    await page.getByRole("button", { name: "Send Invitation" }).click();
+    await Page.assertElementsExist([
+      page.getByText("The invitation has been"),
+      page.getByText(email),
+      page.getByText("Pending", { exact: true }),
+      page.getByText("Member", { exact: true }),
+      page.getByText("Waiting for Acceptance"),
+    ]);
+
+    // resend invite email
+
+    await page
+      .locator('div [data-sentry-source-file="OverviewTab.tsx"] ')
+      .filter({ hasText: email })
+      .locator("button")
+      .click();
+
+    await page.getByRole("menuitem", { name: "Resend" }).click();
+    await Page.assertElementExist(
+      page.getByText("Invitation resent successfully")
+    );
+
+    // delete user to clean data
+
+    await page
+      .locator('div [data-sentry-source-file="OverviewTab.tsx"] ')
+      .filter({ hasText: email })
+      .locator("button")
+      .click();
+    await page.getByRole("menuitem", { name: "Delete" }).click();
+    await Page.assertElementExist(page.getByText("Are you sure you want to"));
+    await page.getByRole("button", { name: "OK" }).click();
+    await Page.assertElementExist(page.getByText("User Deleted successfully"));
+    await Page.assertElementIsNotExist(
+      page
+        .locator('div [data-sentry-source-file="OverviewTab.tsx"] ')
+        .filter({ hasText: email })
+    );
   });
 });
