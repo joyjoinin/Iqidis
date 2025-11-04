@@ -20,8 +20,9 @@ test.describe("Organization", () => {
     await page.waitForTimeout(3000);
   });
 
-  test("Organization homepage", async ({ page }) => {
+  test("Organization overview", async ({ page }) => {
     const Page = new Pages(page);
+    await page.getByRole("tab", { name: "Overview" }).click();
     await Page.assertElementsExist([
       page.getByRole("tab", { name: "Overview" }),
       page.getByRole("tab", { name: "Billing" }),
@@ -36,6 +37,24 @@ test.describe("Organization", () => {
       page.getByText("Status", { exact: true }),
       page.getByText("Trial/Start", { exact: true }),
       page.getByText("Action", { exact: true }),
+    ]);
+  });
+
+  test("Organization billing", async ({ page }) => {
+    const Page = new Pages(page);
+    await page.getByRole("tab", { name: "Billing" }).click();
+    await Page.assertElementsExist([
+      page.getByRole("heading", { name: "Billing history" }),
+      page.getByRole("button", { name: "Export CSV" }),
+      page.getByRole("heading", { name: "Licenses & Payment Method" }),
+      page.getByRole("button", { name: "Purchase Licenses" }),
+      page.getByRole("button", { name: "Add Payment Method" }),
+      page.getByRole("heading", { name: "Billing Rules" }),
+      page.getByText("Licenses", { exact: true }),
+      page.getByText("Amount Paid", { exact: true }),
+      page.getByText("Billing Cycle", { exact: true }),
+      page.getByText("Paid Date", { exact: true }),
+      page.getByText("Actions", { exact: true }),
     ]);
   });
 });
