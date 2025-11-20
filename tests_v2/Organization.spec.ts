@@ -182,4 +182,22 @@ test.describe("Organization", () => {
       page.getByText("Actions", { exact: true }),
     ]);
   });
+
+  test("Transfer", async ({ page }) => {
+    const Page = new Pages(page);
+    await page.getByRole("tab", { name: "Overview" }).click();
+    await page
+      .locator(
+        'div[data-sentry-component="OrganizationDetail"] button[aria-haspopup="menu"]'
+      )
+      .nth(0)
+      .click();
+    await page.getByRole("menuitem", { name: "Transfer Ownership" }).click();
+    await Page.assertElementsExist([
+      page.getByRole("heading", { name: "Transfer Organization" }),
+      page.getByRole("heading", { name: "Select Member" }),
+      page.getByRole("button", { name: "Cancel" }),
+      page.getByRole("button", { name: "Initiate Transfer" }),
+    ]);
+  });
 });
