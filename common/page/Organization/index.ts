@@ -96,10 +96,7 @@ export class Organization {
   }
 
   async organization() {
-    await this.page
-      .locator('div[data-sidebar="footer"] > div > button')
-      .nth(0)
-      .click();
+    await this.page.locator('svg[data-sentry-element="Users"]').click();
   }
 
   async inputEmail(email: string) {

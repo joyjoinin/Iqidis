@@ -54,7 +54,7 @@ test.describe("Organization", () => {
       page.getByRole("button", { name: "Export CSV" }),
       page.getByRole("heading", { name: "Licenses & Payment Method" }),
       page.getByRole("button", { name: "Purchase Licenses" }),
-      page.getByRole("button", { name: "Add Payment Method" }),
+      page.getByRole("button", { name: "Manage Payment Methods" }),
       page.getByRole("heading", { name: "Billing Rules" }),
       page.getByText("Licenses", { exact: true }),
       page.getByText("Amount Paid", { exact: true }),
@@ -70,9 +70,10 @@ test.describe("Organization", () => {
     const description = "description + " + generateRandomString();
     await page
       .locator(
-        'div[data-sentry-component="OrganizationDetail"] [data-sentry-element="DropdownMenuTrigger"]'
+        'div[data-sentry-component="OrganizationDetail"] button[aria-haspopup="menu"]'
       )
-      .hover();
+      .nth(0)
+      .click();
     await page.getByRole("menuitem", { name: "Edit" }).click();
     await Page.assertElementsExist([
       page.getByRole("heading", { name: "Organization Setting" }),
@@ -101,7 +102,7 @@ test.describe("Organization", () => {
       page.getByText("The invitation has been"),
       page.getByText(email),
       page.getByText("Pending", { exact: true }),
-      page.getByText("Member", { exact: true }),
+      page.getByRole("cell", { name: "Member" }),
       page.getByText("Waiting for Acceptance"),
     ]);
 
