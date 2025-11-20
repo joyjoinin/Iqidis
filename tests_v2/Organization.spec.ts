@@ -150,4 +150,17 @@ test.describe("Organization", () => {
         .filter({ hasText: email })
     );
   });
+
+  test("Upgrade Subscription", async ({ page }) => {
+    const Page = new Pages(page);
+    await page.getByRole("tab", { name: "Overview" }).click();
+    await page.getByRole("button", { name: "Upgrade Subscription" }).click();
+    await Page.assertElementsExist([
+      page.getByRole("heading", { name: "Purchase Licenses" }),
+      page.getByRole("heading", { name: "Current Plan Overview" }),
+      page.getByRole("button", { name: "Monthly" }),
+      page.getByRole("button", { name: "Annual" }),
+      page.getByRole("button", { name: "Billing History" }),
+    ]);
+  });
 });
