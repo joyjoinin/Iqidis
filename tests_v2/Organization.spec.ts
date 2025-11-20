@@ -62,6 +62,20 @@ test.describe("Organization", () => {
       page.getByText("Paid Date", { exact: true }),
       page.getByText("Actions", { exact: true }),
     ]);
+    await page.getByRole("button", { name: "Manage Payment Methods" }).click();
+    await Page.assertElementsExist([
+      page.getByRole("heading", { name: "Payment Methods" }),
+      page.getByRole("button", { name: "Add New" }),
+    ]);
+    await page.getByRole("button", { name: "Close" }).first().click();
+    await page.getByRole("button", { name: "Purchase Licenses" }).click();
+    await Page.assertElementsExist([
+      page.getByRole("heading", { name: "Purchase Licenses" }),
+      page.getByRole("heading", { name: "Current Plan Overview" }),
+      page.getByRole("button", { name: "Monthly" }),
+      page.getByRole("button", { name: "Annual" }),
+      page.getByRole("button", { name: "Billing History" }),
+    ]);
   });
 
   test("Organization setting", async ({ page }) => {
