@@ -53,8 +53,8 @@ export default defineConfig({
         // channel: "chrome",
         viewport: { width: 1720, height: 1080 },
         storageState: ".auth/template.json",
-        headless: true,
-        // headless: false,
+        // headless: true,
+        headless: false,
         launchOptions: {
           args: [
             // "--disable-web-security",

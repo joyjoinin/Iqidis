@@ -152,8 +152,18 @@ test.describe("Organization", () => {
   });
 
   test("Upgrade Subscription", async ({ page }) => {
+    let initialValue;
+    let currentValue;
     const Page = new Pages(page);
     await page.getByRole("tab", { name: "Overview" }).click();
+    initialValue = await page
+      .locator(
+        'div[data-sentry-component="StatsCard"]> div > div> p:nth-last-child(2)'
+      )
+      .nth(1)
+      .allInnerTexts();
+    initialValue = initialValue[0].split("/");
+    initialValue = Number(initialValue[1]);
     await page.getByRole("button", { name: "Upgrade Subscription" }).click();
     await Page.assertElementsExist([
       page.getByRole("heading", { name: "Purchase Licenses" }),
@@ -162,6 +172,27 @@ test.describe("Organization", () => {
       page.getByRole("button", { name: "Annual" }),
       page.getByRole("button", { name: "Billing History" }),
     ]);
+    await page.locator('svg[data-sentry-element="Plus"]').click();
+    await page.getByRole("button", { name: "Add Licenses" }).click();
+    try {
+      await page.getByRole("button", { name: "Pay Now" }).click();
+    } catch (error) {
+      await page.getByRole("button", { name: "Update Schedule" }).click();
+    }
+    await Page.assertElementExist(
+      page.getByText("Licenses adjusted successfully!")
+    );
+    await page.waitForTimeout(15000);
+    await page.reload();
+    currentValue = await page
+      .locator(
+        'div[data-sentry-component="StatsCard"]> div > div> p:nth-last-child(2)'
+      )
+      .nth(1)
+      .allInnerTexts();
+    currentValue = currentValue[0].split("/");
+    currentValue = Number(currentValue[1]);
+    await Page.assertElementEqualTo(initialValue, currentValue);
   });
 
   test("Manage Billing", async ({ page }) => {
